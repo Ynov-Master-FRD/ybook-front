@@ -2,12 +2,12 @@ import React from 'react';
 import logo from './logo.svg';
 
 import './App.scss';
-import FormLogin from "./views/Login/FormLogin";
+import FormRegister from "./views/Login/FormRegister";
 
 function App() {
   return (
     <div className="App">
-        <FormLogin></FormLogin>
+        <FormRegister></FormRegister>
     </div>
   );
 }

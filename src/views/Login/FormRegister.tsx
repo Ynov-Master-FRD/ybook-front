@@ -1,9 +1,9 @@
 import React from "react";
 
-const FormLogin = () => {
+const FormRegister = () => {
     return (
         <div>
-            <h2>FormLogin</h2>
+            <h2>Register</h2>
             <label htmlFor="email">Email</label>
             <input type="email" name="email" id="email" />
             <label htmlFor="firstName">First Name</label>
@@ -17,4 +17,4 @@ const FormLogin = () => {
     );
 }
 
-export default FormLogin;
+export default FormRegister;
