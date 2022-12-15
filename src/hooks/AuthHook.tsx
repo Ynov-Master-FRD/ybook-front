@@ -1,3 +1,4 @@
+import { CognitoUserPool } from "amazon-cognito-identity-js";
 import { useGlobalContext } from "../providers/GlobalProvider";
 
 //hook useAuthToken
@@ -7,7 +8,9 @@ export const useAuthToken = () => {
     return token;
 };
 
-export const useCognitoUser = () => {
-    const { cognitoUser } = useGlobalContext();
+export const useRegister(CognitoUserPool)
+
+export const useLogin = () => {
+    const { cognitoUser, setCognitoUser } = useGlobalContext();
     return cognitoUser;
 }
