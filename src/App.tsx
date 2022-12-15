@@ -3,11 +3,16 @@ import logo from './logo.svg';
 
 import './App.scss';
 import FormRegister from "./views/Login/FormRegister";
+import { Route, Routes } from 'react-router-dom';
+import BottomNavBar from './components/BottomNavBar';
 
 function App() {
   return (
     <div className="App">
-        <FormRegister></FormRegister>
+        <Routes>
+            <Route path="/register" element={<FormRegister />} />
+        </Routes>
+        <BottomNavBar></BottomNavBar>
     </div>
   );
 }
