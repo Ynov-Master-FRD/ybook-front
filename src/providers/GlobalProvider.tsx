@@ -1,10 +1,13 @@
 import React, { createContext, ReactElement, useContext, useState } from "react";
+import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 
 //context for global state
 // add context for token from AWS Cognito
 
 type GlobalContextType = {
     token : string;
+    // cognitoUser : AmazonCognitoIdentity.
+    cognitoUser : AmazonCognitoIdentity.CognitoUser;
 
 };
 
@@ -13,8 +16,9 @@ export const useGlobalContext = () => useContext(GlobalContext);
 
 export const GlobalProvider: React.FC<{children: ReactElement}> = ({children}) => {
     const [token] = useState<string>("");
+    const [cognitoUser] = useState<AmazonCognitoIdentity.CognitoUser>(null as any);
     return (
-        <GlobalContext.Provider value={{ token }}>
+        <GlobalContext.Provider value={{ token, cognitoUser }}>
             {children}
         </GlobalContext.Provider>
     );
