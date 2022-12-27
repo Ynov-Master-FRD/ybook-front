@@ -10,7 +10,7 @@ const BottomNavBar = () => {
                 <IconNavbar path="../assets/icon/Message.svg" name="Message" link="/messages"></IconNavbar>
                 <IconNavbar path="../assets/icon/FAB.svg" name="Add Post" link="/add-post"></IconNavbar>
                 <IconNavbar path="../assets/icon/People.svg" name="People" link="/people"></IconNavbar>
-                <IconNavbar path="../assets/icon/Parameters.svg" name="Parameters" link="/parameters"></IconNavbar>
+                <IconNavbar path="../assets/icon/Profil.svg" name="Parameters" link="/profil"></IconNavbar>
             </div>
         </div>
 

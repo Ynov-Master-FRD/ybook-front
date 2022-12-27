@@ -2,7 +2,7 @@ import React from "react";
 
 const FormRegister = () => {
     return (
-        <div>
+        <div className="flex flex-col align-center">
             <h2>Register</h2>
             <label htmlFor="email">Email</label>
             <input type="email" name="email" id="email" />
