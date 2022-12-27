@@ -10,10 +10,10 @@ const Profil = () => {
     return (
         <div className={styles.banner}>
             <div>
-                <h1 className={styles.titleProfil}>Nom Prénom</h1>
+                <h1 className={styles.titleProfil}>NOM Prénom</h1>
             </div>
             <div className="absolute left-4 top-1/5">
-                <Avatar color="red" size="large"></Avatar>
+                <Avatar color="#000" size="large"></Avatar>
             </div>
         </div>
     )
