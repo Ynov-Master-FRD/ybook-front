@@ -4,13 +4,16 @@ import styles from "./Profil.module.scss";
 
 
 const Profil = () => {
+
+    // getUserInfo
+
     return (
         <div className={styles.banner}>
             <div>
-                <h1 className={styles.titleProfil}>Votre Profil</h1>
+                <h1 className={styles.titleProfil}>Nom Prénom</h1>
             </div>
-            <div>
-                <Avatar></Avatar>
+            <div className="absolute left-4 top-1/5">
+                <Avatar color="red" size="large"></Avatar>
             </div>
         </div>
     )
