@@ -21,6 +21,7 @@ const InputPost = () => {
     return (
         <div>
             <RichTextEditor editor={editor}>
+                <RichTextEditor.Content />
                 <RichTextEditor.Toolbar sticky stickyOffset={0}>
                     <RichTextEditor.ControlsGroup>
                         <RichTextEditor.Bold />
@@ -41,8 +42,6 @@ const InputPost = () => {
                        <RichTextEditor.Unlink />
                     </RichTextEditor.ControlsGroup>
                 </RichTextEditor.Toolbar>
-        
-                <RichTextEditor.Content />
             </RichTextEditor>
         </div>
     )

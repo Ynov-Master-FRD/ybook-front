@@ -1,4 +1,3 @@
-@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -41,4 +40,8 @@ small, .text_small {font-size: 0.75rem;}
 
 .mantine-RichTextEditor-content ol, ul {
   list-style: initial; 
+}
+
+button {
+  all : initial;
 }
