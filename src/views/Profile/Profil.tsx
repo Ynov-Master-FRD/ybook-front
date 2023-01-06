@@ -7,6 +7,14 @@ import styles from "./Profil.module.scss";
 const Profil = () => {
 
     // getUserInfo
+    const FakerPost = {
+        firstName: "John",
+        lastName: "Doe",
+        date: "2021-05-01T00:00:00.000Z",
+        content : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl sit amet ultricies lacinia, nisl nisl aliquam nisl, eu aliquam nisl nisl sit amet nisl.",
+        nbComments: 0,
+        nbLikes: 0,
+    }
 
     return (
         <div className="relative">
@@ -21,10 +29,12 @@ const Profil = () => {
             <div className={styles.container}>
                 <h2 className="text-center">Vos Post</h2>
                 <div className={styles.postContainer}>
-                    <Post firstName="John" lastName="Doe" date="2022-12-30T23:50:21.817Z" content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae." likes={245} comments={12}></Post>
-                    <Post firstName="John" lastName="Doe" date="2022-05-12T23:50:21.817Z" content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae." likes={245} comments={12}></Post>
-                    <Post firstName="John" lastName="Doe" date="2020-05-12T23:50:21.817Z" content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae." likes={245} comments={12}></Post>
-                    <Post firstName="John" lastName="Doe" date="2020-05-12T23:50:21.817Z" content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae." likes={245} comments={12}></Post>
+                    <Post {...FakerPost}></Post>
+                    <Post {...FakerPost}></Post>
+                    <Post {...FakerPost}></Post>
+                    <Post {...FakerPost}></Post>
+                    <Post {...FakerPost}></Post>
+                    
                 </div>
             </div>
         </div>

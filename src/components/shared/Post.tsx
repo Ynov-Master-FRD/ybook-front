@@ -3,21 +3,20 @@ import Avatar from './Avatar';
 import Like from './Like';
 import Comment from './Comment';
 
-interface childrenProps {
-    firstName: string,
+interface PostProps {
+    firstName :string,
     lastName: string,
-    date: string,
-    content: string,
-    likes: number,
-    comments: number,
+    date:string,
+    content:string,
+    nbLikes:number,
+    nbComments:number
 }
 
-
-const Post = (children:childrenProps) => {
+const Post = ({ firstName, lastName, date, content, nbLikes, nbComments}:PostProps) => {
 
     let printDate = "";
 
-    const duration = new Date().getTime() - new Date(children.date).getTime();
+    const duration = new Date().getTime() - new Date(date).getTime();
     const durationInDays = Math.floor(duration / (1000 * 60 * 60 * 24));
 
     if(durationInDays<1){
@@ -27,7 +26,7 @@ const Post = (children:childrenProps) => {
     } else if (durationInDays>2 && durationInDays<7){
         printDate = durationInDays + ' jours';
     } else if(durationInDays>7) {
-        printDate = new Date(children.date).toLocaleDateString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
+        printDate = new Date(date).toLocaleDateString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
 
     }
 
@@ -36,16 +35,16 @@ const Post = (children:childrenProps) => {
             <div className='flex'>
                 <Avatar size='medium'></Avatar>
                 <div className='flex flex-col ml-2'>
-                    <span className="font-bold">{children.firstName} {children.lastName}</span>
+                    <span className="font-bold">{firstName} {lastName}</span>
                     <span className='leading-3 text-sm'>{printDate}</span>
                 </div>
             </div>
             <div className='py-1'>
-                <p>{children.content}.</p>
+                <p>{content}.</p>
             </div>
             <div className='flex items-center gap-4'>
-                    <span className='flex'>{children.likes} <Like></Like></span>
-                    <span className='flex'>{children.comments} <Comment></Comment></span>
+                    <span className='flex'>{nbLikes} <Like></Like></span>
+                    <span className='flex'>{nbComments} <Comment></Comment></span>
             </div>
         </div>
     )

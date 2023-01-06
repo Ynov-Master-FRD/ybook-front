@@ -8,7 +8,7 @@ const AddPost = () => {
     return (
         <div className="flex flex-col gap-4">
             <InputPost></InputPost>
-            <Button radius="md" size="md">
+            <Button radius="md" size="md" color='dark'>
                 Publier
             </Button>
         </div>
