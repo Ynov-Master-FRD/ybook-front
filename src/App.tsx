@@ -1,13 +1,18 @@
 import React from 'react';
+import { Route, Routes } from 'react-router-dom';
 import logo from './logo.svg';
 
-import './App.scss';
+
 import FormRegister from "./views/Login/FormRegister";
+import { LoginView } from './views/Login/Login';
 
 function App() {
   return (
     <div className="App">
-        <FormRegister></FormRegister>
+        <Routes>
+            <Route path="/" element={<FormRegister/>}/>
+            {/* <Route path="/login" element={<LoginView/>}/> */}
+        </Routes>
     </div>
   );
 }

@@ -1,7 +1,11 @@
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import ModalConfirmation from '../../components/modalConfirmation';
+import { useAuth } from '../../hooks/AuthHook';
 
 const FormRegister: React.FC = () => {
+    const [showModal, setShowModal] = useState(false);
+    const { register } = useAuth();
 
     // make table of refs for form 
     const formRegister = {
@@ -9,12 +13,7 @@ const FormRegister: React.FC = () => {
         firstName: React.createRef<HTMLInputElement>(),
         lastName: React.createRef<HTMLInputElement>(),
         password: React.createRef<HTMLInputElement>()
-    }
-
-    const poolData = {
-        UserPoolId: `${process.env.REACT_APP_AUTH_USER_POOL_ID}`,
-        ClientId: `${process.env.REACT_APP_AUTH_USER_POOL_WEB_CLIENT_ID}` 
-    }
+    };
 
     // attributeList type is CognitoUserAttribute[]
     const attributeList : AmazonCognitoIdentity.CognitoUserAttribute[]  = [];
@@ -34,12 +33,7 @@ const FormRegister: React.FC = () => {
         Value: ''
     };
 
-    const dataPassword = {
-        Name: 'password',
-        Value: ''
-    };
 
-    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
     const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         console.log(formRegister);
@@ -58,36 +52,34 @@ const FormRegister: React.FC = () => {
         attributeList.push(attributeLastName);
         // attributeList.push(attributePassword);
 
-        userPool.signUp(formRegister.email.current?.value as string, formRegister.password.current?.value as string, attributeList, null as any, (err, result) => {
-            if (err) {
-                alert(err.message || JSON.stringify(err));
-                return;
-            }
-            if(result) {
-                const cognitoUser: AmazonCognitoIdentity.CognitoUser  = result.user;
-                console.log('user name is ' + cognitoUser.getUsername());
-            }
-        });
+         register(formRegister.email.current?.value as string, formRegister.password.current?.value as string, attributeList)
+
     }
 
     return (
-        <div className='w-[60%] flex flex-col items-center'>
-            <h2>Créer un compte</h2>
-            <form onSubmit={handleSubmit} className="flex flex-col">
-                <label htmlFor="email">Email</label>
-                <input ref={formRegister.email}  type="email" name="email" id="email" className="border border-gray-300 rounded-md p-2" />
-                
-                <label htmlFor="firstName">First Name</label>
-                <input ref={formRegister.firstName} type="text" name="firstName" id="firstName" className="border border-gray-300 rounded-md p-2" />
-                
-                <label htmlFor="lastName">Last Name</label>
-                <input ref={formRegister.lastName} type="text" name="lastName" id="lastName" className="border border-gray-300 rounded-md p-2" />
-                
-                <label htmlFor="password">Password</label>
-                <input ref={formRegister.password} type="password" name="password" id="password" className="border border-gray-300 rounded-md p-2" />
-                
-                <button type="submit" className="bg-blue-500 text-white rounded-md p-2">Créer</button>
-            </form>
+        <div className='flex flex-col justify-center items-center min-h-screen '>
+            <div className='w-[60%] flex flex-col items-center'>
+                <h2>Créer un compte</h2>
+                <form onSubmit={handleSubmit} className="flex flex-col">
+                    <label htmlFor="email">Email</label>
+                    <input ref={formRegister.email}  type="email" name="email" id="email" className="border border-gray-300 rounded-md p-2" />
+                    
+                    <label htmlFor="firstName">First Name</label>
+                    <input ref={formRegister.firstName} type="text" name="firstName" id="firstName" className="border border-gray-300 rounded-md p-2" />
+                    
+                    <label htmlFor="lastName">Last Name</label>
+                    <input ref={formRegister.lastName} type="text" name="lastName" id="lastName" className="border border-gray-300 rounded-md p-2" />
+                    
+                    <label htmlFor="password">Password</label>
+                    <input ref={formRegister.password} type="password" name="password" id="password" className="border border-gray-300 rounded-md p-2" />
+                    
+                    <button type="submit" className="bg-blue-500 text-white rounded-md p-2">Créer</button>
+                </form>
+            </div>
+            <button onClick={()=>setShowModal(true)}>modal</button>
+            {
+                showModal ? <ModalConfirmation/> : null
+            }
         </div>
     );
 }
