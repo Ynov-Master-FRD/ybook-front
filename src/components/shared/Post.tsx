@@ -40,7 +40,8 @@ const Post = ({ firstName, lastName, date, content, nbLikes, nbComments}:PostPro
                 </div>
             </div>
             <div className='py-1'>
-                <p>{content}.</p>
+                <p dangerouslySetInnerHTML={{__html: content}}></p>
+                
             </div>
             <div className='flex items-center gap-4'>
                     <span className='flex'>{nbLikes} <Like></Like></span>

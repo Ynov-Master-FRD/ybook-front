@@ -8,12 +8,17 @@ import { RichTextEditor, Link } from "@mantine/tiptap"
 import StarterKit from "@tiptap/starter-kit";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import { Highlight } from "@tiptap/extension-highlight";
-
 import Post from "./Post";
+const DOMPurify = require('dompurify');
+
 
 const AddPost = () => {
     const [opened, setOpened] = useState(false);
     const [content, setContent] = useState("");
+
+    const contentCleaner = (content: string) => {
+        return DOMPurify.sanitize(content);
+    }
 
     const editor = useEditor({
         extensions: [

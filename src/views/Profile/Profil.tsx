@@ -6,6 +6,8 @@ import styles from "./Profil.module.scss";
 import { IPost } from "../../utils/Interface/Post";
 import apiBack from "../../utils/axios-api";
 
+const DOMPurify = require('dompurify');
+
 const Profil = () => {
 
     let [posts, setPosts]= useState([]);
@@ -37,8 +39,9 @@ const Profil = () => {
                 <div className={styles.postContainer}>
                     {posts?
                         posts.map((post:IPost) => (
-                             <Post firstName={post.user.firstname} lastName={post.user.lastname} nbComments={post.postComments.length} nbLikes={post.postLikes.length} content={post.htmlContent} date={post.createdAt}></Post>
+                             <Post firstName={post.user.firstname} lastName={post.user.lastname} nbComments={post.postComments.length} nbLikes={post.postLikes.length} content={DOMPurify.sanitize(post.htmlContent)} date={post.createdAt}></Post>
                         )):
+                        
                         <p>Vous n'avez pas encore de post</p> 
                     }
     
