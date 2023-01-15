@@ -1,11 +1,12 @@
-import React from "react";
+import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import { useEditor } from "@tiptap/react";
 import { RichTextEditor, Link } from "@mantine/tiptap"
 import StarterKit from "@tiptap/starter-kit";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import { Highlight } from "@tiptap/extension-highlight";
 
-const InputPost = () => {
+const InputPost = forwardRef((props, ref) => {
+    
     const editor = useEditor({
         extensions: [
             StarterKit,
@@ -17,6 +18,10 @@ const InputPost = () => {
         ],
         content: '',
     });
+    useImperativeHandle(ref, () => ({
+        editor
+    }));
+
 
     return (
         <div>
@@ -45,6 +50,6 @@ const InputPost = () => {
             </RichTextEditor>
         </div>
     )
-}
+})
 
 export default InputPost;

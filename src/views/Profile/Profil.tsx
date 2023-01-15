@@ -3,8 +3,8 @@ import Avatar from "../../components/shared/Avatar";
 import Post from "../../components/shared/Post";
 import styles from "./Profil.module.scss";
 
-import instance from "../../utils/axios-api";
 import { IPost } from "../../utils/Interface/Post";
+import apiBack from "../../utils/axios-api";
 
 const Profil = () => {
 
@@ -12,7 +12,7 @@ const Profil = () => {
 
 
     useEffect(() => {
-        instance.get('/post')
+        apiBack.get('/post')
         .then((response) => {
             setPosts(response.data);
         })
