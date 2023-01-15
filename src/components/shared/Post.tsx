@@ -4,9 +4,9 @@ import Like from './Like';
 import Comment from './Comment';
 
 interface PostProps {
-    firstName :string,
+    firstName : string,
     lastName: string,
-    date:string,
+    date:Date,
     content:string,
     nbLikes:number,
     nbComments:number
@@ -31,9 +31,9 @@ const Post = ({ firstName, lastName, date, content, nbLikes, nbComments}:PostPro
     }
 
     return (
-        <div className='flex flex-col p-4 border-y bg-grey'>
+        <div className='flex flex-col p-4 border-y bg-grey rounded-lg'>
             <div className='flex'>
-                <Avatar size='medium'></Avatar>
+                <Avatar size='medium' ></Avatar>
                 <div className='flex flex-col ml-2'>
                     <span className="font-bold">{firstName} {lastName}</span>
                     <span className='leading-3 text-sm'>{printDate}</span>

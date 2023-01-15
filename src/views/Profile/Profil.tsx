@@ -1,20 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "../../components/shared/Avatar";
 import Post from "../../components/shared/Post";
 import styles from "./Profil.module.scss";
 
+import instance from "../../utils/axios-api";
+import { IPost } from "../../utils/Interface/Post";
 
 const Profil = () => {
 
-    // getUserInfo
-    const FakerPost = {
-        firstName: "John",
-        lastName: "Doe",
-        date: "2021-05-01T00:00:00.000Z",
-        content : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl sit amet ultricies lacinia, nisl nisl aliquam nisl, eu aliquam nisl nisl sit amet nisl.",
-        nbComments: 0,
-        nbLikes: 0,
-    }
+    let [posts, setPosts]= useState([]);
+
+
+    useEffect(() => {
+        instance.get('/post')
+        .then((response) => {
+            setPosts(response.data);
+        })
+        .catch((error:Error) => {
+            console.log(error);
+        })
+        
+    },[]);
 
     return (
         <div className="relative">
@@ -29,16 +35,17 @@ const Profil = () => {
             <div className={styles.container}>
                 <h2 className="text-center">Vos Post</h2>
                 <div className={styles.postContainer}>
-                    <Post {...FakerPost}></Post>
-                    <Post {...FakerPost}></Post>
-                    <Post {...FakerPost}></Post>
-                    <Post {...FakerPost}></Post>
-                    <Post {...FakerPost}></Post>
-                    
+                    {posts?
+                        posts.map((post:IPost) => (
+                             <Post firstName={post.user.firstname} lastName={post.user.lastname} nbComments={post.postComments.length} nbLikes={post.postLikes.length} content={post.htmlContent} date={post.createdAt}></Post>
+                        )):
+                        <p>Vous n'avez pas encore de post</p> 
+                    }
+    
+                    </div>
                 </div>
             </div>
-        </div>
-    )
-}
+        )
+    }
 
-export default Profil;
+    export default Profil;
