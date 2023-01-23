@@ -33,20 +33,27 @@ const Post = ({ firstName, lastName, date, content, nbLikes, nbComments, profilP
     }
 
     return (
-        <Paper withBorder radius="md" className='py-3 px-6'>
-        <Group>
-          <Avatar src={profilPicture} radius="xl" />
-          <div>
-            <Text size="md">{firstName} {lastName}</Text>
-            <Text size="sm" color="dimmed">
-                {printDate}
-            </Text>
-          </div>
-        </Group>
-        <TypographyStylesProvider className='mt-2 pl-14'>
-          <div className='text-base' dangerouslySetInnerHTML={{__html: content}} />
-        </TypographyStylesProvider>
-      </Paper>
+      <div>
+          <Paper withBorder radius="lg" className='py-3 px-6'>
+          <Group>
+            <Avatar src={profilPicture} radius="xl" />
+            <div>
+              <Text size="md">{firstName} {lastName}</Text>
+              <Text size="sm" color="dimmed">
+                  {printDate}
+              </Text>
+            </div>
+          </Group>
+          <TypographyStylesProvider className='mt-4'>
+            <div className='text-base' dangerouslySetInnerHTML={{__html: content}} />
+          </TypographyStylesProvider>
+          <hr />
+        <div className='flex items-center gap-4 mt-1'>
+          <span className='flex'>{nbLikes} <Like></Like></span>
+          <span className='flex'>{nbComments} <Comment></Comment></span>
+        </div>
+        </Paper>
+      </div>
     )
 }
 

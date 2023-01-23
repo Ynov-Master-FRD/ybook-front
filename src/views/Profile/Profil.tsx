@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import Avatar from "../../components/shared/Avatar";
+// import Avatar from "../../components/shared/Avatar";
 import Post from "../../components/shared/Post";
 import styles from "./Profil.module.scss";
 
 import { IPost } from "../../utils/Interface/Post";
 import apiBack from "../../utils/axios-api";
+import { Avatar } from "@mantine/core";
 
 const DOMPurify = require('dompurify');
 
@@ -29,8 +30,10 @@ const Profil = () => {
         <div className="relative">
             <div className={styles.banner}>
                 <div className="absolute left-4 -bottom-8 rounded-full bg-white">
-                    <Avatar color="#000" size="large"></Avatar>
-                </div>
+                    {/* <Avatar color="#000" size="large"></Avatar> */}
+                    <Avatar size="xl" color="gray" className="rounded-full"/>
+
+                </div> 
             </div>
             <div className="m-8">
                 <span className="text-xl font-semibold">John Doe</span>

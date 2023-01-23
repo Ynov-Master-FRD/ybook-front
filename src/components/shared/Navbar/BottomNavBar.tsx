@@ -17,7 +17,7 @@ const BottomNavBar = () => {
             </Modal>
 
             <div className="flex justify-around items-center h-full">
-                <IconNavbar path="../assets/icon/Home.svg" name="Home" link="/register"></IconNavbar>
+                <IconNavbar path="../assets/icon/Home.svg" name="Home" link="/home"></IconNavbar>
                 <IconNavbar path="../assets/icon/Message.svg" name="Message" link="/messages"></IconNavbar>
                 <ActionIcon
                     onClick={() => setOpened(true)} 

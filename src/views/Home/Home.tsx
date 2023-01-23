@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Post from "../../components/shared/Post";
-import styles from "./Profil.module.scss";
+import styles from "./Home.module.scss";
 
 import { IPost } from "../../utils/Interface/Post";
 import apiBack from "../../utils/axios-api";
@@ -27,7 +27,7 @@ const Home = () => {
     return (
         <div className="relative">
             <div className={styles.container}>
-                <h2 className="text-center">Vos Post</h2>
+                <h2 className="text-center">Actualités</h2>
                 <div className={styles.postContainer}>
                     {posts?
                         posts.map((post:IPost) => (
