@@ -1,3 +1,4 @@
+import { Avatar } from '@mantine/core';
 import { IUser } from "./User";
 
 export interface IPost {
@@ -5,10 +6,12 @@ export interface IPost {
     createdAt: Date;
     updatedAt: Date;
     htmlContent: string;
+    userId : number;
     user: IUser;
     postLikes: IPostLike[];
     postComments: IPostComment[];
     postAttachments: IPostAttachment[];
+    avatarS3Key: string;
 }
   
   interface IPostLike {
