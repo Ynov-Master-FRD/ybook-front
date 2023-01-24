@@ -8,17 +8,20 @@ import BottomNavBar from './components/shared/Navbar/BottomNavBar';
 import Profil from './views/Profile/Profil';
 import { MantineProvider } from '@mantine/core';
 import Home from './views/Home/Home';
+import { NotificationsProvider } from '@mantine/notifications';
 
 function App() {
   return (
     <div className="App">
       <MantineProvider withNormalizeCSS >
-        <Routes>
-            <Route path="/register" element={<FormRegister />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/profil" element={<Profil />} />
-        </Routes>
-        <BottomNavBar></BottomNavBar>
+        <NotificationsProvider>
+          <Routes>
+              <Route path="/register" element={<FormRegister />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/profil" element={<Profil />} />
+          </Routes>
+          <BottomNavBar></BottomNavBar>
+        </NotificationsProvider>
       </MantineProvider>
     </div>
   );

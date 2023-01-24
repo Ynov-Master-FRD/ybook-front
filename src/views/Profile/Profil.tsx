@@ -29,7 +29,6 @@ const Profil = () => {
         <div className="relative">
             <div className={styles.banner}>
                 <div className="absolute left-4 -bottom-8 rounded-full bg-white">
-                    {/* <Avatar color="#000" size="large"></Avatar> */}
                     <Avatar size="xl" color="gray" className="rounded-full"/>
 
                 </div> 

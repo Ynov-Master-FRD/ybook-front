@@ -13,11 +13,11 @@ const BottomNavBar = () => {
     return (
         <div className={styles.navbar}>
             <Modal title="Publier un post" opened={opened} onClose={() => setOpened(false)}>
-                <AddPost></AddPost>
+                <AddPost setOpened={setOpened}></AddPost>
             </Modal>
 
             <div className="flex justify-around items-center h-full">
-                <IconNavbar path="../assets/icon/Home.svg" name="Home" link="/home"></IconNavbar>
+                <IconNavbar path="../assets/icon/Home.svg" name="Home" link="/home  "></IconNavbar>
                 <IconNavbar path="../assets/icon/Message.svg" name="Message" link="/messages"></IconNavbar>
                 <ActionIcon
                     onClick={() => setOpened(true)} 

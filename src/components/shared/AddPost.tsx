@@ -8,13 +8,18 @@ import { RichTextEditor, Link } from "@mantine/tiptap"
 import StarterKit from "@tiptap/starter-kit";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import { Highlight } from "@tiptap/extension-highlight";
-import Post from "./Post";
+import { showNotification, updateNotification } from '@mantine/notifications'
+import { IconCheck, IconX } from "@tabler/icons";
+
 const DOMPurify = require('dompurify');
 
+interface AddPostProps {
+    setOpened: (opened: boolean) => void;
+}
 
-const AddPost = () => {
-    const [opened, setOpened] = useState(false);
+const AddPost = (props:AddPostProps) => {
     const [content, setContent] = useState("");
+
 
     const contentCleaner = (content: string) => {
         return DOMPurify.sanitize(content);
@@ -34,18 +39,46 @@ const AddPost = () => {
             setContent(editor.getHTML());
         }
     });
-
+    
     const handlePublish = () => {
-        setOpened(false);
+        showNotification({
+            id: 'load-data',
+            loading: true,
+            title: 'Envoi en cours...',
+            message: 'Votre post est en cours de publication...',
+            autoClose: true,
+            disallowClose: false,
+        });
+        
         apiBack.post('/post', {
-            htmlContent: content,
-            userId: 18
+                htmlContent: contentCleaner(content),
+                userId: 18
+            })
+            .then((response) => {
+                updateNotification({
+                    id: 'load-data',
+                    color: 'teal',
+                    title: 'Post publié !',
+                    message: 'Merci pour votre contribution à la communauté ! ❤️',
+                    icon: <IconCheck size={16} />,
+                    autoClose: 5000,
+                });
+                props.setOpened(false);
+            }
+            ).catch((error: Error) => {
+                updateNotification({
+                    id: 'load-data',
+                    color: 'red',
+                    title: 'Erreur',
+                    message: 'Une erreur est survenue, veuillez réessayer plus tard.',
+                    icon: <IconX size={16} />,
+                    autoClose: 2000,
+                });
         })
     }
 
     return (
         <div className="flex flex-col gap-4">
-            {/* <InputPost ref={inputPostRef}></InputPost> */}
             <div>
             <RichTextEditor editor={editor}>
                 <RichTextEditor.Content />
