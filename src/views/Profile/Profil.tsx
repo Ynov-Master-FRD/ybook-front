@@ -18,7 +18,6 @@ const Profil = () => {
         apiBack.get('/post')
         .then((response) => {
             setPosts(response.data);
-            console.log(response.data);
         })
         .catch((error:Error) => {
             console.log(error);
@@ -45,6 +44,7 @@ const Profil = () => {
                         posts.filter((post:IPost)=>post.userId==18)
                             .map((post:IPost) => (
                                 <Post key={post.id}
+                                id= {post.id}
                                 firstName={post.user.firstname} 
                                 lastName={post.user.lastname} 
                                 date={post.createdAt}

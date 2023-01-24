@@ -16,7 +16,6 @@ const Home = () => {
         apiBack.get('/post')
         .then((response) => {
             setPosts(response.data);
-            console.log(response.data);
         })
         .catch((error:Error) => {
             console.log(error);
@@ -31,7 +30,8 @@ const Home = () => {
                 <div className={styles.postContainer}>
                     {posts?
                         posts.map((post:IPost) => (
-                            <Post 
+                            <Post key={post.id}
+                            id= {post.id}
                             firstName={post.user.firstname} 
                             lastName={post.user.lastname} 
                             nbComments={post.postComments.length} 
