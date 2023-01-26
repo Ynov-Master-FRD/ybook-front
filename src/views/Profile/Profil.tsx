@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import Avatar from "../../components/shared/Avatar";
 import Post from "../../components/shared/Post";
 import styles from "./Profil.module.scss";
 

@@ -10,7 +10,7 @@ import { useDatePublish } from "../../hooks/useDatePublish";
 import apiBack from "../../utils/axios-api";
 import { useEffect, useState } from "react";
 import { IPostLike } from "../../utils/Interface/Post";
-import { Comments } from "./Comments";
+import { Comments } from "../Comments/Comments";
 
 interface PostProps {
   id: number;
@@ -39,9 +39,9 @@ const Post = ({
   const [likesNumber, setLikesNumber] = useState<number>(likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [displayComments, setDisplayComments] = useState(false);
-  const [userAuthId] = useState(18);
 
   //useAuth
+  const authId = 18;
 
   useEffect(() => {
     apiBack.get(`/postlike/post/${id}`).then((response) => {
@@ -88,7 +88,7 @@ const Post = ({
               </Text>
             </div>
           </div>
-          {userAuthId === userPostId && (
+          {authId === userPostId && (
             <Menu
               shadow="md"
               width={200}
