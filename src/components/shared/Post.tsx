@@ -1,5 +1,5 @@
 // import Avatar from './Avatar';
-import { Text, Avatar, Group, Paper, Menu, ActionIcon } from "@mantine/core";
+import { Text, Avatar, Group, Paper, Menu, ActionIcon, Divider } from "@mantine/core";
 import {
   IconTrash,
   IconAlertCircle,
@@ -10,9 +10,11 @@ import { useDatePublish } from "../../hooks/useDatePublish";
 import apiBack from "../../utils/axios-api";
 import { useEffect, useState } from "react";
 import { IPostLike } from "../../utils/Interface/Post";
+import { Comments } from "./Comments";
 
 interface PostProps {
   id: number;
+  userPostId: number;
   firstName: string;
   lastName: string;
   date: Date;
@@ -24,26 +26,32 @@ interface PostProps {
 
 const Post = ({
   id,
+  userPostId,
   firstName,
   lastName,
   date,
   content,
+  likes,
   nbComments,
   profilPicture,
 }: PostProps) => {
   const printDate = useDatePublish(date);
-  const [likesNumber, setLikesNumber] = useState(null);
+  const [likesNumber, setLikesNumber] = useState<number>(likes.length);
   const [isLiked, setIsLiked] = useState(false);
+  const [displayComments, setDisplayComments] = useState(false);
+  const [userAuthId] = useState(18);
+
+  //useAuth
 
   useEffect(() => {
     apiBack.get(`/postlike/post/${id}`).then((response) => {
-      setLikesNumber(response.data.length );
-      response.data.forEach((like: any) => {
-        if (like.userId === 18) {
-          setIsLiked(true);
-        }
-      });
-    });
+          setLikesNumber(response.data.length);
+          response.data.forEach((like: any) => {
+            if (like.userId === 18) {
+              setIsLiked(true);
+            }
+          });
+        });
   }, [isLiked]);
 
   const handleLike = () => {
@@ -53,7 +61,6 @@ const Post = ({
       })
       .then(
         (response) => {
-          console.log(response);
           setIsLiked(!isLiked);
         },
         (error) => {
@@ -63,7 +70,7 @@ const Post = ({
   };
 
   const handleComment = () => {
-    console.log("comment");
+    setDisplayComments(!displayComments);
   };
 
   return (
@@ -74,60 +81,57 @@ const Post = ({
             <Avatar src={profilPicture} radius="xl" />
             <div>
               <Text size="md">
-                {firstName} {lastName} {id}
+                {firstName} {lastName}
               </Text>
               <Text size="sm" color="dimmed">
                 {printDate}
               </Text>
             </div>
           </div>
-          <Menu
-            shadow="md"
-            width={200}
-            position="left"
-            withArrow
-            arrowPosition="center"
-            transition="rotate-right"
-            transitionDuration={150}
-          >
-            <Menu.Target>
-              <ActionIcon size="md" variant="transparent">
-                <IconTrash size={18} />
-              </ActionIcon>
-            </Menu.Target>
+          {userAuthId === userPostId && (
+            <Menu
+              shadow="md"
+              width={200}
+              position="left"
+              withArrow
+              arrowPosition="center"
+              transition="rotate-right"
+              transitionDuration={150}
+            >
+              <Menu.Target>
+                <ActionIcon size="md" variant="transparent">
+                  <IconTrash size={18} />
+                </ActionIcon>
+              </Menu.Target>
 
-            <Menu.Dropdown>
-              <Menu.Item color="red" icon={<IconAlertCircle size={14} />}>
-                Are you sure ?
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
+              <Menu.Dropdown>
+                <Menu.Item color="red" icon={<IconAlertCircle size={14} />}>
+                  Êtes-vous sûr ?
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          )}
         </Group>
         <div
-          className="text-base mt-4"
+          className="text-lg mt-4"
           dangerouslySetInnerHTML={{ __html: content }}
         />
-        <hr />
+        <Divider size="xs" variant="solid" className="my-2"/>
         <div className="flex items-center gap-4 mt-1">
-          <span className={`${isLiked ? "text-green" : "text-dark"} flex`}>
+          <span
+            className={`${
+              isLiked ? "text-green" : "text-dark"
+            } flex transition duration-1000 ease-in-out`}
+          >
             {likesNumber}
-            {isLiked ? (
-              <ActionIcon
-                onClick={handleLike}
-                color="green"
-                variant="transparent"
-              >
-                <IconThumbUp size={24} />
-              </ActionIcon>
-            ) : (
-              <ActionIcon
-                onClick={handleLike}
-                color="dark"
-                variant="transparent"
-              >
-                <IconThumbUp size={24} />
-              </ActionIcon>
-            )}
+            <ActionIcon
+              onClick={handleLike}
+              color={isLiked ? "green" : "dark"}
+              variant="transparent"
+              className="transition duration-1000 ease-in-out"
+            >
+              <IconThumbUp size={24} />
+            </ActionIcon>
           </span>
           <span className="flex">
             {nbComments}{" "}
@@ -140,6 +144,11 @@ const Post = ({
             </ActionIcon>
           </span>
         </div>
+        {displayComments && (
+          <div className="mt-4">
+            <Comments postId={id}></Comments>
+          </div>
+        )}
       </Paper>
     </div>
   );
