@@ -30,17 +30,16 @@ const Profil = () => {
             <div className={styles.banner}>
                 <div className="absolute left-4 -bottom-8 rounded-full bg-white">
                     <Avatar size="xl" color="gray" className="rounded-full"/>
-
                 </div> 
+            <div className="absolute top-2/3 left-1/4">
+                <span className="text-4xl font-semibold text-white">John Doe</span>
             </div>
-            <div className="m-8">
-                <span className="text-xl font-semibold">John Doe</span>
             </div>
             <div className={styles.container}>
                 <h2 className="text-center">Vos Post</h2>
                 <div className={styles.postContainer}>
                     {posts?
-                        posts.filter((post:IPost)=>post.userId==18)
+                        posts.filter((post:IPost)=>post.userId===18)
                             .map((post:IPost) => (
                                 <Post key={post.id}
                                 id= {post.id}
@@ -48,7 +47,7 @@ const Profil = () => {
                                 lastName={post.user.lastname} 
                                 date={post.createdAt}
                                 nbComments={post.postComments.length} 
-                                nbLikes={post.postLikes.length} 
+                                likes={post.postLikes} 
                                 content={DOMPurify.sanitize(post.htmlContent)} 
                                 profilPicture={post.avatarS3Key}
                                 />

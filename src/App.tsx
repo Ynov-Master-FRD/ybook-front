@@ -9,6 +9,7 @@ import Profil from './views/Profile/Profil';
 import { MantineProvider } from '@mantine/core';
 import Home from './views/Home/Home';
 import { NotificationsProvider } from '@mantine/notifications';
+import { Friends } from './views/Friends/Friends';
 
 function App() {
   return (
@@ -16,8 +17,9 @@ function App() {
       <MantineProvider withNormalizeCSS >
         <NotificationsProvider>
           <Routes>
+              <Route path="/" element={<Home />} />
               <Route path="/register" element={<FormRegister />} />
-              <Route path="/home" element={<Home />} />
+              <Route path="/friends" element={<Friends />} />
               <Route path="/profil" element={<Profil />} />
           </Routes>
           <BottomNavBar></BottomNavBar>
