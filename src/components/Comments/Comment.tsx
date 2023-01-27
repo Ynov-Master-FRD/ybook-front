@@ -25,7 +25,7 @@ export const Comment = (props: CommentProps) => {
   const comment = props.comment;
 
   useEffect(() => {
-    console.log(isEdit)
+    // console.log(isEdit)
   }, [isEdit]);
 
   const handleDelete = (commentId: number) => {

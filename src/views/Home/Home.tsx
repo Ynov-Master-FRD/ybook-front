@@ -38,6 +38,8 @@ const Home = () => {
             <Post
               key={post.id}
               id={post.id}
+              createdAt={post.createdAt}
+              updatedAt={post.updatedAt}
               userPostId={post.userId}
               firstName={post.user.firstname}
               lastName={post.user.lastname}

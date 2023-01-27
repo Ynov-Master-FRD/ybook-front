@@ -8,7 +8,13 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { IconCheck, IconDots, IconDotsVertical, IconPencil, IconTrash } from "@tabler/icons";
+import {
+  IconCheck,
+  IconDots,
+  IconDotsVertical,
+  IconPencil,
+  IconTrash,
+} from "@tabler/icons";
 import { useEffect, useState } from "react";
 import apiBack from "../../utils/axios-api";
 import { IPostComment } from "../../utils/Interface/Post";
@@ -37,30 +43,28 @@ export const Comments = (props: CommentsProps) => {
     setUpdate(false);
   }, [update]);
 
-
   return (
     <>
+      <Divider size="xs" variant="solid" className="mb-1" />
+      <AddComment postId={props.postId} setNewComment={setUpdate}></AddComment>
+
       <Divider
         size="xs"
         variant="dotted"
         label="Commentaires"
         className="mb-1"
       />
-      <AddComment
-        postId={props.postId}
-        setNewComment={setUpdate}
-      ></AddComment>
 
       {isLoading ? (
         <Loader className="self-center" color="dark" variant="dots" size="sm" />
       ) : (
         <Stack spacing="xs" className="mt-2">
-          {comments.map((comment:IPostComment) => (
-           <Comment
+          {comments.map((comment: IPostComment) => (
+            <Comment
               key={comment.id}
               setUpdate={setUpdate}
               comment={comment}
-           ></Comment>
+            ></Comment>
           ))}
         </Stack>
       )}

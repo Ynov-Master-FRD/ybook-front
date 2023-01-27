@@ -1,5 +1,13 @@
 // import Avatar from './Avatar';
-import { Text, Avatar, Group, Paper, Menu, ActionIcon, Divider } from "@mantine/core";
+import {
+  Text,
+  Avatar,
+  Group,
+  Paper,
+  Menu,
+  ActionIcon,
+  Divider,
+} from "@mantine/core";
 import {
   IconTrash,
   IconAlertCircle,
@@ -15,6 +23,8 @@ import { Comments } from "../Comments/Comments";
 interface PostProps {
   id: number;
   userPostId: number;
+  createdAt: Date;
+  updatedAt: Date;
   firstName: string;
   lastName: string;
   date: Date;
@@ -27,6 +37,8 @@ interface PostProps {
 const Post = ({
   id,
   userPostId,
+  createdAt,
+  updatedAt,
   firstName,
   lastName,
   date,
@@ -39,19 +51,20 @@ const Post = ({
   const [likesNumber, setLikesNumber] = useState<number>(likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [displayComments, setDisplayComments] = useState(false);
+  const [isEdited, setIsEdited] = useState(false);
 
   //useAuth
   const authId = 18;
 
   useEffect(() => {
     apiBack.get(`/postlike/post/${id}`).then((response) => {
-          setLikesNumber(response.data.length);
-          response.data.forEach((like: any) => {
-            if (like.userId === 18) {
-              setIsLiked(true);
-            }
-          });
-        });
+      setLikesNumber(response.data.length);
+      response.data.forEach((like: any) => {
+        if (like.userId === 18) {
+          setIsLiked(true);
+        }
+      });
+    });
   }, [isLiked]);
 
   const handleLike = () => {
@@ -73,6 +86,12 @@ const Post = ({
     setDisplayComments(!displayComments);
   };
 
+  useEffect(() => {
+    if (createdAt !== updatedAt) {
+      setIsEdited(true);
+    }
+  }, []);
+
   return (
     <div>
       <Paper withBorder radius="lg" className="py-3 px-6">
@@ -84,7 +103,7 @@ const Post = ({
                 {firstName} {lastName}
               </Text>
               <Text size="sm" color="dimmed">
-                {printDate}
+               {isEdited ? `${printDate} (Modifié)`: printDate}
               </Text>
             </div>
           </div>
@@ -116,7 +135,7 @@ const Post = ({
           className="text-lg mt-4"
           dangerouslySetInnerHTML={{ __html: content }}
         />
-        <Divider size="xs" variant="solid" className="my-2"/>
+        <Divider size="xs" variant="solid" className="my-2" />
         <div className="flex items-center gap-4 mt-1">
           <span
             className={`${
@@ -145,7 +164,7 @@ const Post = ({
           </span>
         </div>
         {displayComments && (
-          <div className="mt-4">
+          <div className="mt-3">
             <Comments postId={id}></Comments>
           </div>
         )}

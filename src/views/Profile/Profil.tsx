@@ -49,6 +49,8 @@ const Profil = () => {
               .map((post: IPost) => (
                 <Post
                   key={post.id}
+                  createdAt={post.createdAt}
+                  updatedAt={post.updatedAt}
                   userPostId={post.userId}
                   id={post.id}
                   firstName={post.user.firstname}
