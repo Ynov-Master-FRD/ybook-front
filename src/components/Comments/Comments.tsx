@@ -1,21 +1,7 @@
 import {
-  Group,
-  Stack,
-  Text,
-  Loader,
-  Divider,
-  Menu,
-  ActionIcon,
+  Divider, Loader, Stack
 } from "@mantine/core";
-import { showNotification } from "@mantine/notifications";
-import {
-  IconCheck,
-  IconDots,
-  IconDotsVertical,
-  IconPencil,
-  IconTrash,
-} from "@tabler/icons";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import apiBack from "../../utils/axios-api";
 import { IPostComment } from "../../utils/Interface/Post";
 import { AddComment } from "./AddComment";

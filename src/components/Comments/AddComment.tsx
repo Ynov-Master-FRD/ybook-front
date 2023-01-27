@@ -1,6 +1,7 @@
 import { ActionIcon, Textarea } from "@mantine/core";
 import { IconMailFast } from "@tabler/icons";
 import { useState } from "react";
+import { usePostContext } from "../../providers/PostProvider";
 import apiBack from "../../utils/axios-api";
 
 interface AddCommentProps {
@@ -8,28 +9,29 @@ interface AddCommentProps {
   setNewComment: (value: boolean) => void;
 }
 
-export function AddComment({postId, setNewComment}: AddCommentProps) {
+export function AddComment({ postId, setNewComment }: AddCommentProps) {
   const [value, setValue] = useState<string>("");
+  const {post,dispatch} = usePostContext();
 
   //useAuth
   const authId = 18;
 
   const handleSubmit = () => {
-      apiBack
-        .post(`/postcomment`, {
-          postId: postId,
-          userId: authId,
-          text: value,
-        })
-        .then((response) => {
-          console.log(response);
-          setNewComment(true);
-          setValue("");
-
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    apiBack
+      .post(`/postcomment`, {
+        postId: postId,
+        userId: authId,
+        text: value,
+      })
+      .then((response) => {
+        console.log(response);
+        setNewComment(true);
+        setValue("");
+        dispatch({type:"UPDATE", payload: {...post, nbComments: post.nbComments + 1}})
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -38,7 +40,7 @@ export function AddComment({postId, setNewComment}: AddCommentProps) {
         <ActionIcon
           size={34}
           radius="xl"
-          color="green" 
+          color="green"
           variant="filled"
           className="self-start mt-3"
           disabled={!value}

@@ -13,84 +13,65 @@ import {
   IconAlertCircle,
   IconThumbUp,
   IconMessageCircle,
+  IconDotsVertical,
+  IconPencil,
 } from "@tabler/icons";
 import { useDatePublish } from "../../hooks/useDatePublish";
 import apiBack from "../../utils/axios-api";
-import { useEffect, useState } from "react";
-import { IPostLike } from "../../utils/Interface/Post";
+import { useCallback, useEffect, useState } from "react";
 import { Comments } from "../Comments/Comments";
+import {
+  PostProps,
+  usePostContext,
+  withPostContext,
+} from "../../providers/PostProvider";
 
-interface PostProps {
-  id: number;
-  userPostId: number;
-  createdAt: Date;
-  updatedAt: Date;
-  firstName: string;
-  lastName: string;
-  date: Date;
-  content: string;
-  likes: IPostLike[];
-  nbComments: number;
-  profilPicture: string;
-}
+const Post = () => {
+  const { post, dispatch } = usePostContext();
 
-const Post = ({
-  id,
-  userPostId,
-  createdAt,
-  updatedAt,
-  firstName,
-  lastName,
-  date,
-  content,
-  likes,
-  nbComments,
-  profilPicture,
-}: PostProps) => {
+  const {
+    id,
+    content,
+    createdAt,
+    updatedAt,
+    likes,
+    userPostId,
+    date,
+    firstName,
+    lastName,
+    nbComments,
+    profilPicture,
+  } = post;
   const printDate = useDatePublish(date);
   const [likesNumber, setLikesNumber] = useState<number>(likes.length);
-  const [isLiked, setIsLiked] = useState(false);
   const [displayComments, setDisplayComments] = useState(false);
-  const [isEdited, setIsEdited] = useState(false);
 
   //useAuth
   const authId = 18;
+  const isEdited = createdAt !== updatedAt;
+  const [isLiked, setIsLiked] = useState(
+    likes.some((like) => like.userId === authId)
+  );
 
-  useEffect(() => {
-    apiBack.get(`/postlike/post/${id}`).then((response) => {
-      setLikesNumber(response.data.length);
-      response.data.forEach((like: any) => {
-        if (like.userId === 18) {
-          setIsLiked(true);
-        }
-      });
-    });
-  }, [isLiked]);
-
-  const handleLike = () => {
+  const handleLike = useCallback(() => {
     apiBack
       .post(`/post/like/${id}`, {
         userId: 18,
       })
       .then(
-        (response) => {
+        () => {
           setIsLiked(!isLiked);
+          setLikesNumber((prevState) => prevState + (isLiked ? -1 : 1));
         },
         (error) => {
           console.log(error);
         }
       );
-  };
+  }, [isLiked]);
 
   const handleComment = () => {
     setDisplayComments(!displayComments);
   };
-
-  useEffect(() => {
-    if (createdAt !== updatedAt) {
-      setIsEdited(true);
-    }
-  }, []);
 
   return (
     <div>
@@ -103,7 +84,7 @@ const Post = ({
                 {firstName} {lastName}
               </Text>
               <Text size="sm" color="dimmed">
-               {isEdited ? `${printDate} (Modifié)`: printDate}
+                {isEdited ? `${printDate} (Modifié)` : printDate}
               </Text>
             </div>
           </div>
@@ -119,13 +100,16 @@ const Post = ({
             >
               <Menu.Target>
                 <ActionIcon size="md" variant="transparent">
-                  <IconTrash size={18} />
+                  <IconDotsVertical size={18} />
                 </ActionIcon>
               </Menu.Target>
 
               <Menu.Dropdown>
-                <Menu.Item color="red" icon={<IconAlertCircle size={14} />}>
-                  Êtes-vous sûr ?
+                <Menu.Item icon={<IconTrash size={14} />}>
+                  Éditer
+                </Menu.Item>
+                <Menu.Item color="red" icon={<IconPencil size={14} />}>
+                  Supprimer
                 </Menu.Item>
               </Menu.Dropdown>
             </Menu>
@@ -173,4 +157,7 @@ const Post = ({
   );
 };
 
-export default Post;
+const PostWithContext = (props: PostProps) =>
+  withPostContext(Post, { ...props });
+
+export default PostWithContext;

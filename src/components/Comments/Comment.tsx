@@ -1,13 +1,17 @@
-import { Group, Menu, ActionIcon, Text, TextInput, Textarea } from "@mantine/core";
+import {
+  Group,
+  Menu,
+  ActionIcon,
+  Text, Textarea
+} from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import {
   IconCheck,
-  IconDotsVertical,
-  IconMailFast,
-  IconPencil,
-  IconTrash,
+  IconDotsVertical, IconPencil,
+  IconTrash
 } from "@tabler/icons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { usePostContext } from "../../providers/PostProvider";
 import apiBack from "../../utils/axios-api";
 import { IPostComment } from "../../utils/Interface/Post";
 
@@ -19,46 +23,58 @@ interface CommentProps {
 export const Comment = (props: CommentProps) => {
   const [isEdit, setIsEdit] = useState(false);
   const [value, setValue] = useState<string>("");
+  const { post, dispatch } = usePostContext();
 
   //useAuth
   const authId = 18;
   const comment = props.comment;
 
   const handleDelete = (commentId: number) => {
-    apiBack.delete(`/postcomment/${commentId}`).then(() => {
-      showNotification({
-        id: "comment-deleted",
-        loading: false,
-        title: "Suppression réussie",
-        message: "Votre commentaire a bien été supprimé",
-        autoClose: true,
-        icon: <IconCheck size={16} />,
-        disallowClose: false,
+    apiBack
+      .delete(`/postcomment/${commentId}`)
+      .then(() => {
+        showNotification({
+          id: "comment-deleted",
+          loading: false,
+          title: "Suppression réussie",
+          message: "Votre commentaire a bien été supprimé",
+          autoClose: true,
+          icon: <IconCheck size={16} />,
+          disallowClose: false,
+        });
+        props.setUpdate(true);
+        dispatch({
+          type: "UPDATE",
+          payload: { ...post, nbComments: post.nbComments - 1 },
+        });
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      props.setUpdate(true);
-    });
   };
 
   const handleEdit = (comment: IPostComment) => {
     setIsEdit(!isEdit);
     setValue(comment.text);
-    console.log("click:"+isEdit)
+    console.log("click:" + isEdit);
   };
 
   const handleSubmit = () => {
-    apiBack.put(`/postcomment/${comment.id}`, { userId:authId, text: value }).then(() => {
-      showNotification({
-        id: "comment-edited",
-        loading: false,
-        title: "Modification réussie",
-        message: "Votre commentaire a bien été modifié",
-        autoClose: true,
-        icon: <IconCheck size={16} />,
-        disallowClose: false,
+    apiBack
+      .put(`/postcomment/${comment.id}`, { userId: authId, text: value })
+      .then(() => {
+        showNotification({
+          id: "comment-edited",
+          loading: false,
+          title: "Modification réussie",
+          message: "Votre commentaire a bien été modifié",
+          autoClose: true,
+          icon: <IconCheck size={16} />,
+          disallowClose: false,
+        });
+        props.setUpdate(true);
+        setIsEdit(false);
       });
-      props.setUpdate(true);
-      setIsEdit(false);
-    });
   };
 
   return (
@@ -103,13 +119,8 @@ export const Comment = (props: CommentProps) => {
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item
-              icon={
-                <IconPencil
-                  size={16}
-                  stroke={1.5}
-                  />
-                }
-                onClick={() => handleEdit(comment)}
+              icon={<IconPencil size={16} stroke={1.5} />}
+              onClick={() => handleEdit(comment)}
             >
               Editer
             </Menu.Item>
