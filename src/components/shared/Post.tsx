@@ -1,69 +1,76 @@
 // import Avatar from './Avatar';
-import { Text, Avatar, Group, Paper, Menu, ActionIcon } from "@mantine/core";
+import {
+  Text,
+  Avatar,
+  Group,
+  Paper,
+  Menu,
+  ActionIcon,
+  Divider,
+} from "@mantine/core";
 import {
   IconTrash,
   IconAlertCircle,
   IconThumbUp,
   IconMessageCircle,
+  IconDotsVertical,
+  IconPencil,
 } from "@tabler/icons";
 import { useDatePublish } from "../../hooks/useDatePublish";
 import apiBack from "../../utils/axios-api";
-import { useEffect, useState } from "react";
-import { IPostLike } from "../../utils/Interface/Post";
+import { useCallback, useEffect, useState } from "react";
+import { Comments } from "../Comments/Comments";
+import {
+  PostProps,
+  usePostContext,
+  withPostContext,
+} from "../../providers/PostProvider";
 
-interface PostProps {
-  id: number;
-  firstName: string;
-  lastName: string;
-  date: Date;
-  content: string;
-  likes: IPostLike[];
-  nbComments: number;
-  profilPicture: string;
-}
+const Post = () => {
+  const { post, dispatch } = usePostContext();
 
-const Post = ({
-  id,
-  firstName,
-  lastName,
-  date,
-  content,
-  nbComments,
-  profilPicture,
-}: PostProps) => {
+  const {
+    id,
+    content,
+    createdAt,
+    updatedAt,
+    likes,
+    userPostId,
+    date,
+    firstName,
+    lastName,
+    nbComments,
+    profilPicture,
+  } = post;
   const printDate = useDatePublish(date);
-  const [likesNumber, setLikesNumber] = useState(null);
-  const [isLiked, setIsLiked] = useState(false);
+  const [likesNumber, setLikesNumber] = useState<number>(likes.length);
+  const [displayComments, setDisplayComments] = useState(false);
 
-  useEffect(() => {
-    apiBack.get(`/postlike/post/${id}`).then((response) => {
-      setLikesNumber(response.data.length );
-      response.data.forEach((like: any) => {
-        if (like.userId === 18) {
-          setIsLiked(true);
-        }
-      });
-    });
-  }, [isLiked]);
+  //useAuth
+  const authId = 18;
+  const isEdited = createdAt !== updatedAt;
+  const [isLiked, setIsLiked] = useState(
+    likes.some((like) => like.userId === authId)
+  );
 
-  const handleLike = () => {
+  const handleLike = useCallback(() => {
     apiBack
       .post(`/post/like/${id}`, {
         userId: 18,
       })
       .then(
-        (response) => {
-          console.log(response);
+        () => {
           setIsLiked(!isLiked);
+          setLikesNumber((prevState) => prevState + (isLiked ? -1 : 1));
         },
         (error) => {
           console.log(error);
         }
       );
-  };
+  }, [isLiked]);
 
   const handleComment = () => {
-    console.log("comment");
+    setDisplayComments(!displayComments);
   };
 
   return (
@@ -74,60 +81,60 @@ const Post = ({
             <Avatar src={profilPicture} radius="xl" />
             <div>
               <Text size="md">
-                {firstName} {lastName} {id}
+                {firstName} {lastName}
               </Text>
               <Text size="sm" color="dimmed">
-                {printDate}
+                {isEdited ? `${printDate} (Modifié)` : printDate}
               </Text>
             </div>
           </div>
-          <Menu
-            shadow="md"
-            width={200}
-            position="left"
-            withArrow
-            arrowPosition="center"
-            transition="rotate-right"
-            transitionDuration={150}
-          >
-            <Menu.Target>
-              <ActionIcon size="md" variant="transparent">
-                <IconTrash size={18} />
-              </ActionIcon>
-            </Menu.Target>
+          {authId === userPostId && (
+            <Menu
+              shadow="md"
+              width={200}
+              position="left"
+              withArrow
+              arrowPosition="center"
+              transition="rotate-right"
+              transitionDuration={150}
+            >
+              <Menu.Target>
+                <ActionIcon size="md" variant="transparent">
+                  <IconDotsVertical size={18} />
+                </ActionIcon>
+              </Menu.Target>
 
-            <Menu.Dropdown>
-              <Menu.Item color="red" icon={<IconAlertCircle size={14} />}>
-                Are you sure ?
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
+              <Menu.Dropdown>
+                <Menu.Item icon={<IconTrash size={14} />}>
+                  Éditer
+                </Menu.Item>
+                <Menu.Item color="red" icon={<IconPencil size={14} />}>
+                  Supprimer
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          )}
         </Group>
         <div
-          className="text-base mt-4"
+          className="text-lg mt-4"
           dangerouslySetInnerHTML={{ __html: content }}
         />
-        <hr />
+        <Divider size="xs" variant="solid" className="my-2" />
         <div className="flex items-center gap-4 mt-1">
-          <span className={`${isLiked ? "text-green" : "text-dark"} flex`}>
+          <span
+            className={`${
+              isLiked ? "text-green" : "text-dark"
+            } flex transition duration-1000 ease-in-out`}
+          >
             {likesNumber}
-            {isLiked ? (
-              <ActionIcon
-                onClick={handleLike}
-                color="green"
-                variant="transparent"
-              >
-                <IconThumbUp size={24} />
-              </ActionIcon>
-            ) : (
-              <ActionIcon
-                onClick={handleLike}
-                color="dark"
-                variant="transparent"
-              >
-                <IconThumbUp size={24} />
-              </ActionIcon>
-            )}
+            <ActionIcon
+              onClick={handleLike}
+              color={isLiked ? "green" : "dark"}
+              variant="transparent"
+              className="transition duration-1000 ease-in-out"
+            >
+              <IconThumbUp size={24} />
+            </ActionIcon>
           </span>
           <span className="flex">
             {nbComments}{" "}
@@ -140,9 +147,17 @@ const Post = ({
             </ActionIcon>
           </span>
         </div>
+        {displayComments && (
+          <div className="mt-3">
+            <Comments postId={id}></Comments>
+          </div>
+        )}
       </Paper>
     </div>
   );
 };
 
-export default Post;
+const PostWithContext = (props: PostProps) =>
+  withPostContext(Post, { ...props });
+
+export default PostWithContext;
