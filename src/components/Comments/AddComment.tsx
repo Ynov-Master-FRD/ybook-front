@@ -1,17 +1,14 @@
 import { ActionIcon, Textarea } from "@mantine/core";
-import {
-  IconArrowRight, IconMailFast
-} from "@tabler/icons";
+import { IconMailFast } from "@tabler/icons";
 import { useState } from "react";
 import apiBack from "../../utils/axios-api";
-import { IPostComment } from "../../utils/Interface/Post";
 
 interface AddCommentProps {
   postId: number;
   setNewComment: (value: boolean) => void;
 }
 
-export function AddComment(props: AddCommentProps) {
+export function AddComment({postId, setNewComment}: AddCommentProps) {
   const [value, setValue] = useState<string>("");
 
   //useAuth
@@ -20,13 +17,15 @@ export function AddComment(props: AddCommentProps) {
   const handleSubmit = () => {
       apiBack
         .post(`/postcomment`, {
-          postId: props.postId,
+          postId: postId,
           userId: authId,
           text: value,
         })
         .then((response) => {
           console.log(response);
-          props.setNewComment(true);
+          setNewComment(true);
+          setValue("");
+
         })
         .catch((error) => {
           console.log(error);

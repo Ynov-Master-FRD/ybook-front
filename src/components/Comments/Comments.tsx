@@ -15,7 +15,7 @@ import {
   IconPencil,
   IconTrash,
 } from "@tabler/icons";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import apiBack from "../../utils/axios-api";
 import { IPostComment } from "../../utils/Interface/Post";
 import { AddComment } from "./AddComment";
@@ -35,7 +35,7 @@ export const Comments = (props: CommentsProps) => {
 
   useEffect(() => {
     apiBack.get(`/postcomment/${props.postId}`).then((response) => {
-      setInterval(() => {
+      setTimeout(() => {
         setComments(response.data);
         setIsLoading(false);
       }, 300);

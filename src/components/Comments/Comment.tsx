@@ -24,10 +24,6 @@ export const Comment = (props: CommentProps) => {
   const authId = 18;
   const comment = props.comment;
 
-  useEffect(() => {
-    // console.log(isEdit)
-  }, [isEdit]);
-
   const handleDelete = (commentId: number) => {
     apiBack.delete(`/postcomment/${commentId}`).then(() => {
       showNotification({
@@ -50,7 +46,7 @@ export const Comment = (props: CommentProps) => {
   };
 
   const handleSubmit = () => {
-    apiBack.put(`/postcomment/${comment.id}`, { text: value }).then(() => {
+    apiBack.put(`/postcomment/${comment.id}`, { userId:authId, text: value }).then(() => {
       showNotification({
         id: "comment-edited",
         loading: false,

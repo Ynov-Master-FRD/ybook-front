@@ -17,7 +17,7 @@ const Profil = () => {
     apiBack
       .get("/post")
       .then((response) => {
-        setInterval(() => {
+        setTimeout(() => {
           setPosts(response.data);
           setIsLoading(false);
         }, 1000);
