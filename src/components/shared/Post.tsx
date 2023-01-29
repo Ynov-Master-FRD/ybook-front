@@ -10,7 +10,8 @@ import {
 } from "@mantine/core";
 import {
   IconTrash,
-  IconAlertCircle,
+  IconX,
+  IconCheck,
   IconThumbUp,
   IconMessageCircle,
   IconDotsVertical,
@@ -18,7 +19,10 @@ import {
 } from "@tabler/icons";
 import { useDatePublish } from "../../hooks/useDatePublish";
 import apiBack from "../../utils/axios-api";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
+import { showNotification } from "@mantine/notifications";
+import { openConfirmModal } from "@mantine/modals";
+
 import { Comments } from "../Comments/Comments";
 import {
   PostProps,
@@ -41,13 +45,16 @@ const Post = () => {
     lastName,
     nbComments,
     profilPicture,
+    setUpdate,
   } = post;
+
   const printDate = useDatePublish(date);
   const [likesNumber, setLikesNumber] = useState<number>(likes.length);
   const [displayComments, setDisplayComments] = useState(false);
 
   //useAuth
-  const authId = 18;
+  const authId = 15;
+
   const isEdited = createdAt !== updatedAt;
   const [isLiked, setIsLiked] = useState(
     likes.some((like) => like.userId === authId)
@@ -72,6 +79,53 @@ const Post = () => {
   const handleComment = () => {
     setDisplayComments(!displayComments);
   };
+  
+  const handleEditPost = () => {}
+    
+  const handleDeletePost = () => {
+    if (authId === userPostId) {
+      apiBack
+        .delete(`/post/${id}`)
+        .then((response) => {
+          showNotification({
+            id: "post-deleted",
+            loading: false,
+            title: "Suppression réussie",
+            message: "Votre post a bien été supprimé",
+            autoClose: true,
+            icon: <IconCheck size={16} />,
+            disallowClose: false,
+          });
+          setUpdate(true);
+        })
+        .catch((error) => {
+          showNotification({
+            id: "post-deleted",
+            loading: false,
+            title: "Erreur lors de la suppression",
+            message: "Votre post n'a pas pu être supprimé, veuillez réessayer",
+            autoClose: true,
+            icon: <IconX size={16} />,
+            disallowClose: false,
+          });
+        });
+    }
+  };
+
+  const openDeleteModal = () =>
+    openConfirmModal({
+      title: "Supprimer le post",
+      centered: true,
+      children: (
+        <Text size="sm">
+          Êtes-vous sûr de vouloir supprimer ce post ? Cette action est irréversible
+        </Text>
+      ),
+      labels: { confirm: "Supprimer", cancel: "Annuler" },
+      confirmProps: { color: "red" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: () => handleDeletePost(),
+    });
 
   return (
     <div>
@@ -105,10 +159,8 @@ const Post = () => {
               </Menu.Target>
 
               <Menu.Dropdown>
-                <Menu.Item icon={<IconTrash size={14} />}>
-                  Éditer
-                </Menu.Item>
-                <Menu.Item color="red" icon={<IconPencil size={14} />}>
+                <Menu.Item onClick={handleEditPost} icon={<IconPencil size={14} />}>Éditer</Menu.Item>
+                <Menu.Item onClick={openDeleteModal} color="red" icon={<IconTrash size={14} />}>
                   Supprimer
                 </Menu.Item>
               </Menu.Dropdown>

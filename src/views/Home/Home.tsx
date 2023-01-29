@@ -10,6 +10,7 @@ const DOMPurify = require("dompurify");
 
 const Home = () => {
   let [posts, setPosts] = useState<IPost[]>([]);
+  const [isUpdate, setUpdate] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
 
@@ -17,7 +18,7 @@ const Home = () => {
     apiBack
       .get("/post")
       .then((response) => {
-        setInterval(() => {
+        setTimeout(() => {
           setPosts(response.data);
           setIsLoading(false);
         }, 500);
@@ -25,7 +26,8 @@ const Home = () => {
       .catch((error: Error) => {
         console.log(error);
       });
-  }, []);
+      setUpdate(false);
+  }, [isUpdate]);
 
   return (
     <div className={styles.container}>
@@ -48,6 +50,7 @@ const Home = () => {
               content={DOMPurify.sanitize(post.htmlContent)}
               date={post.createdAt}
               profilPicture={post.avatarS3Key}
+              setUpdate={setUpdate}
             />
           ))}
       </div>

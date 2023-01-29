@@ -89,7 +89,7 @@ export const Comment = (props: CommentProps) => {
               variant="filled"
               className="self-start mt-2"
               disabled={!value}
-              onClick={() => handleSubmit()}
+              onClick={handleSubmit}
             >
               <IconPencil color="white" size={18} stroke={1.5} />
             </ActionIcon>
