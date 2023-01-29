@@ -53,7 +53,7 @@ const Post = () => {
   const [displayComments, setDisplayComments] = useState(false);
 
   //useAuth
-  const authId = 15;
+  const authId = 18;
 
   const isEdited = createdAt !== updatedAt;
   const [isLiked, setIsLiked] = useState(
@@ -63,7 +63,7 @@ const Post = () => {
   const handleLike = useCallback(() => {
     apiBack
       .post(`/post/like/${id}`, {
-        userId: 18,
+        userId: authId,
       })
       .then(
         () => {

@@ -11,6 +11,7 @@ import Home from './views/Home/Home';
 import { NotificationsProvider } from '@mantine/notifications';
 import { Friends } from './views/Friends/Friends';
 import { Messages } from './views/Conversations/Messages';
+import { ModalsProvider } from '@mantine/modals';
 import { ConversationProvider } from './providers/ConversationProvider';
 
 
