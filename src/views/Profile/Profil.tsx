@@ -11,6 +11,7 @@ const DOMPurify = require("dompurify");
 const Profil = () => {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUpdate, setUpdate] = useState(false);
   //useAuth
 
   useEffect(() => {
@@ -25,7 +26,8 @@ const Profil = () => {
       .catch((error: Error) => {
         console.log(error);
       });
-  }, []);
+    setUpdate(false);
+  }, [isUpdate]);
 
   return (
     <div className="relative">
@@ -60,6 +62,7 @@ const Profil = () => {
                   likes={post.postLikes}
                   content={DOMPurify.sanitize(post.htmlContent)}
                   profilPicture={post.avatarS3Key}
+                  setUpdate={setUpdate}
                 />
               ))
           ) : (

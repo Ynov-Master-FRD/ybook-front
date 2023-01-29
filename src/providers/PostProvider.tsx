@@ -13,6 +13,7 @@ export interface PostProps {
   likes: IPostLike[];
   nbComments: number;
   profilPicture: string;
+  setUpdate: (value:boolean) => void;
 }
 
 // créer un context pour un post
