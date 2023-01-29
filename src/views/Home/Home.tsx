@@ -13,7 +13,6 @@ const Home = () => {
   const [isUpdate, setUpdate] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-
   useEffect(() => {
     apiBack
       .get("/post")
@@ -26,17 +25,23 @@ const Home = () => {
       .catch((error: Error) => {
         console.log(error);
       });
-      setUpdate(false);
+    setUpdate(false);
   }, [isUpdate]);
 
   return (
     <div className={styles.container}>
       <h1 className="text-center pt-6">Actualités</h1>
       <div className={styles.postContainer}>
-      {isLoading && (
-            <Loader className="self-center" color="dark" variant="dots" size="xl"/>
-          )}
-        {posts && posts.map((post) => (
+        {isLoading && (
+          <Loader
+            className="self-center"
+            color="dark"
+            variant="dots"
+            size="xl"
+          />
+        )}
+        {posts &&
+          posts.map((post) => (
             <Post
               key={post.id}
               id={post.id}
@@ -52,7 +57,7 @@ const Home = () => {
               profilPicture={post.avatarS3Key}
               setUpdate={setUpdate}
             />
-          ))} 
+          ))}
       </div>
     </div>
   );

@@ -3,17 +3,16 @@ import React from "react";
 import "./App.scss";
 import FormRegister from "./views/Login/FormRegister";
 
-import { Route, Routes } from 'react-router-dom';
-import BottomNavBar from './components/shared/Navbar/BottomNavBar';
-import Profil from './views/Profile/Profil';
-import { MantineProvider } from '@mantine/core';
-import Home from './views/Home/Home';
-import { NotificationsProvider } from '@mantine/notifications';
-import { Friends } from './views/Friends/Friends';
-import { Messages } from './views/Conversations/Messages';
-import { ModalsProvider } from '@mantine/modals';
-import { ConversationProvider } from './providers/ConversationProvider';
-
+import { Route, Routes } from "react-router-dom";
+import BottomNavBar from "./components/shared/Navbar/BottomNavBar";
+import Profil from "./views/Profile/Profil";
+import { MantineProvider } from "@mantine/core";
+import Home from "./views/Home/Home";
+import { NotificationsProvider } from "@mantine/notifications";
+import { Friends } from "./views/Friends/Friends";
+import { Messages } from "./views/Conversations/Messages";
+import { ModalsProvider } from "@mantine/modals";
+import { ConversationProvider } from "./providers/ConversationProvider";
 
 function App() {
   return (
@@ -26,13 +25,16 @@ function App() {
               <Route path="/register" element={<FormRegister />} />
               <Route path="/friends" element={<Friends />} />
               <Route path="/profil" element={<Profil />} />
-              <Route path="/messages" element={
-                <ConversationProvider>
-                  <Messages />
-                </ConversationProvider>
-              } />
+              <Route
+                path="/messages"
+                element={
+                  <ConversationProvider>
+                    <Messages />
+                  </ConversationProvider>
+                }
+              />
             </Routes>
-          <BottomNavBar></BottomNavBar>
+            <BottomNavBar></BottomNavBar>
           </ModalsProvider>
         </NotificationsProvider>
       </MantineProvider>
