@@ -28,6 +28,10 @@ export interface FriendsProps {
 export const Friends = () => {
   const [data, setData] = useState<FriendsProps[]>([]);
 
+  // TODO: delete this useEffect
+
+
+
   useEffect(() => {
     setData([
       {
@@ -73,6 +77,7 @@ export const Friends = () => {
     <>
       <h1 className="text-center pt-6">Liste d'amis</h1>
       <ScrollArea>
+        {/* TODO: margin à width of table  */}
         <Table sx={{ width: "100%" }} verticalSpacing="md">
           <tbody>{rowsFriends(data)}</tbody>
         </Table>

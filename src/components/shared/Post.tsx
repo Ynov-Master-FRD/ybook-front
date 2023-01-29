@@ -79,9 +79,7 @@ const Post = () => {
   const handleComment = () => {
     setDisplayComments(!displayComments);
   };
-  
-  const handleEditPost = () => {}
-    
+      
   const handleDeletePost = () => {
     if (authId === userPostId) {
       apiBack
@@ -159,7 +157,6 @@ const Post = () => {
               </Menu.Target>
 
               <Menu.Dropdown>
-                <Menu.Item onClick={handleEditPost} icon={<IconPencil size={14} />}>Éditer</Menu.Item>
                 <Menu.Item onClick={openDeleteModal} color="red" icon={<IconTrash size={14} />}>
                   Supprimer
                 </Menu.Item>
