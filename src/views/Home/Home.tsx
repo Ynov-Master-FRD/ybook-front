@@ -37,7 +37,7 @@ const Home = () => {
               date={post.createdAt}
               profilPicture={post.avatarS3Key}
             />
-          ))}
+          ))} 
       </div>
     </div>
   );
