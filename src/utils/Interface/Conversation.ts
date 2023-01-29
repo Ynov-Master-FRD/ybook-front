@@ -17,6 +17,7 @@ export interface IConversationMessage {
     updatedAt: Date;
     conversation: IConversation;
     conversationId: number;
+    content: string;
     from: IUser;
     fromId: number;
     to: IUser;

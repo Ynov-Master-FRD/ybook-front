@@ -52,7 +52,7 @@ const Home = () => {
               profilPicture={post.avatarS3Key}
               setUpdate={setUpdate}
             />
-          ))}
+          ))} 
       </div>
     </div>
   );
