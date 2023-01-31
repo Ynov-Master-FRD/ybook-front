@@ -4,6 +4,8 @@ import { useConversationContext } from "../../providers/ConversationProvider"
 import { IConversation } from "../../utils/Interface/Conversation";
 import { TextInput, ActionIcon, Group, Menu, Text, Avatar } from '@mantine/core';
 import { IconDotsVertical, IconPencil, IconSearch, IconTrash } from '@tabler/icons';
+import { Link } from "react-router-dom";
+
 
 export const Messages: React.FunctionComponent = () => {
     const userId = 20;
@@ -55,6 +57,7 @@ export const Messages: React.FunctionComponent = () => {
 
     const handleSelectConversation = (conversationId: number) => {
         // TODO: select a conversation
+        console.log(conversationId)
     }
 
     
@@ -77,19 +80,21 @@ export const Messages: React.FunctionComponent = () => {
             </div>
             <div className="overflow-y-auto flex flex-col">
                 {filteredConversations.map((conversation) => (
-                    <Group className="cursor-pointer" position="apart" key={conversation.id}>
-                        <div className="flex no-wrap gap-3" onClick={() => handleSelectConversation(conversation.id)}>
-                            <Avatar radius="xl" />
-                            <div>
-                                <Text size="md">
-                                    {conversationName(conversation)}
-                                </Text>
-                                <Text size="sm" color="dimmed">
-                                    {conversation.messages.length > 0 ? conversation.messages[0].content : ''}
-                                </Text>
+                    <Link key={conversation.id} to={`/conversations/${conversation.id}`}>
+                        <Group className="cursor-pointer" position="apart">
+                            <div className="flex no-wrap gap-3" onClick={() => handleSelectConversation(conversation.id)}>
+                                <Avatar radius="xl" />
+                                <div>
+                                    <Text size="md">
+                                        {conversationName(conversation)}
+                                    </Text>
+                                    <Text size="sm" color="dimmed">
+                                        {conversation.messages.length > 0 ? conversation.messages[0].content : ''}
+                                    </Text>
+                                </div>
                             </div>
-                        </div>
-                    </Group>
+                        </Group>
+                    </Link>
                 ))}
             </div>
         </div>    

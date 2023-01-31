@@ -12,6 +12,7 @@ import { NotificationsProvider } from '@mantine/notifications';
 import { Friends } from './views/Friends/Friends';
 import { Messages } from './views/Conversations/Messages';
 import { ConversationProvider } from './providers/ConversationProvider';
+import { ConversationDetail } from './views/Conversations/ConversationDetail';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
                   <Messages />
                 </ConversationProvider>
                 } />
+                <Route path="/conversations/:idConversation" element={<ConversationDetail />} />
           </Routes>
           <BottomNavBar></BottomNavBar>
         </NotificationsProvider>
