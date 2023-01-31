@@ -13,6 +13,7 @@ import { Friends } from "./views/Friends/Friends";
 import { Messages } from "./views/Conversations/Messages";
 import { ModalsProvider } from "@mantine/modals";
 import { ConversationProvider } from "./providers/ConversationProvider";
+import { Users } from "./views/Friends/Users";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Route path="/register" element={<FormRegister />} />
               <Route path="/friends" element={<Friends />} />
               <Route path="/profil" element={<Profil />} />
+              <Route path="/users" element={<Users />} />
               <Route
                 path="/messages"
                 element={

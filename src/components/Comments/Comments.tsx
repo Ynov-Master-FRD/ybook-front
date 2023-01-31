@@ -31,6 +31,7 @@ export const Comments = (props: CommentsProps) => {
 
   return (
     <>
+    {/* TODO : Animation slide down */}
       <Divider size="xs" variant="solid" className="mb-1" />
       <AddComment postId={props.postId} setNewComment={setUpdate}></AddComment>
 

@@ -35,7 +35,7 @@ const Profil = () => {
         <div className="absolute left-4 -bottom-8 rounded-full bg-white">
           <Avatar size="xl" color="gray" className="rounded-full" />
         </div>
-        <div className="absolute top-2/3 left-1/4">
+        <div className="absolute top-2/3 left-32">
           <span className="text-4xl font-semibold text-white">John Doe</span>
         </div>
       </div>
