@@ -8,6 +8,7 @@ import {
   Text,
   Center,
   TextInput,
+  ActionIcon,
 } from "@mantine/core";
 import { keys } from "@mantine/utils";
 import {
@@ -15,10 +16,15 @@ import {
   IconChevronDown,
   IconChevronUp,
   IconSearch,
+  IconUserPlus,
+  IconX,
+  IconCheck,
 } from "@tabler/icons";
 import apiBack from "../../utils/axios-api";
 import { IUser } from "../../utils/Interface/User";
 import { PostProps } from "../../providers/PostProvider";
+import { showNotification, updateNotification } from "@mantine/notifications";
+import {IFriendship} from "../../utils/Interface/Friendship";
 
 interface TableSortProps {
   data: IUser[];
@@ -57,7 +63,9 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
 function filterData(data: IUser[], search: string) {
   const query = search.toLowerCase().trim();
   return data.filter((item) =>
-    keys(data[0]).some((key) => item[key].toString().toLowerCase().includes(query))
+    keys(data[0]).some((key) =>
+      item[key].toString().toLowerCase().includes(query)
+    )
   );
 }
 
@@ -83,12 +91,14 @@ function sortData(
   );
 }
 
-export function SearchUser( {data}: TableSortProps) {
+export function SearchUser({ data }: TableSortProps) {
   const [search, setSearch] = useState("");
   const [sortedData, setSortedData] = useState<IUser[]>([]);
   const [sortBy, setSortBy] = useState<keyof IUser | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
-
+  //useAuth
+  const AuthId = 18;
+  
   useEffect(() => {
     apiBack
       .get("/user")
@@ -115,16 +125,83 @@ export function SearchUser( {data}: TableSortProps) {
     );
   };
 
+  const handleAddFriends = (UserId: number) => {
+    showNotification({
+      id: "add-friends",
+      loading: true,
+      title: "Checking...",
+      message: "Vérification de votre demande d'amis",
+      autoClose: true,
+      disallowClose: false,
+    });
+
+    apiBack.get(`/friendship/requests/${AuthId}`).then((response) => {
+      const isAlreadySending = response.data.find(
+        (request: any) => request.fromId === AuthId && request.toId === UserId
+      );
+      if (isAlreadySending) {
+        updateNotification({
+          id: "add-friends",
+          loading: false,
+          title: "Impossible d'envoyer la demande",
+          message: "Vous avez déjà envoyé une demande à cet utilisateur",
+          autoClose: true,
+          disallowClose: false,
+        });
+      } else {
+        apiBack
+          .post("/friendship/add", { fromId: AuthId, toId: UserId })
+          .then((response) => {
+            updateNotification({
+              id: "add-friends",
+              loading: false,
+              title: "Demande envoyée",
+              message: "Votre demande d'amis a bien été envoyée",
+              color:"green",
+              icon: <IconCheck size={18} />,
+              autoClose: true,
+              disallowClose: false,
+            });
+          })
+          .catch((error) => {
+            console.log(error)
+            updateNotification({
+              id: "add-friends",
+              loading: false,
+              title: "Erreur",
+              message: "Une erreur est survenue lors de l'envoi de votre demande",
+              color:"red",
+              icon: <IconX size={18} />,
+              autoClose: true,
+              disallowClose: false,
+            });
+          });
+
+        }
+      });
+  };
+
   const rows = sortedData.map((row) => (
     <tr key={row.email}>
       <td>{row.firstname}</td>
       <td>{row.lastname}</td>
       <td>{row.email}</td>
+      <td>
+        <Group position="right">
+          <ActionIcon
+            variant="filled"
+            color="dark"
+            onClick={() => handleAddFriends(row.id)}
+          >
+            <IconUserPlus size={14} />
+          </ActionIcon >
+        </Group>
+      </td>
     </tr>
   ));
 
   return (
-    <ScrollArea className="w-4/5 mx-auto mt-3 pb-20">
+    <ScrollArea className="w-11/12 mx-auto mt-3 pb-20">
       <TextInput
         placeholder="Search by any field"
         mb="md"
@@ -134,9 +211,10 @@ export function SearchUser( {data}: TableSortProps) {
         // TODO: Search bar doesn't work
       />
       <Table
-        horizontalSpacing="md"
+        horizontalSpacing="xs"
         verticalSpacing="xs"
-        sx={{ tableLayout: "fixed", minWidth: 700 }}
+        fontSize="xs"
+        sx={{ tableLayout: "fixed", minWidth: "100%" }}
       >
         <thead>
           <tr>
@@ -161,6 +239,7 @@ export function SearchUser( {data}: TableSortProps) {
             >
               Email
             </Th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>

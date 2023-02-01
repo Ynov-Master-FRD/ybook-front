@@ -1,22 +1,8 @@
-import {
-  Avatar,
-  Table,
-  Group,
-  Text,
-  ActionIcon,
-  Menu,
-  ScrollArea,
-} from "@mantine/core";
-import {
-  IconPencil,
-  IconMessages,
-  IconNote,
-  IconReportAnalytics,
-  IconTrash,
-  IconDots,
-} from "@tabler/icons";
+import { Table, ScrollArea, Group, Button } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { rowsFriends } from "./rowsFriends";
+import { IconUserSearch } from "@tabler/icons";
+import { useNavigate } from "react-router-dom";
 
 export interface FriendsProps {
   avatar: string;
@@ -27,10 +13,9 @@ export interface FriendsProps {
 
 export const Friends = () => {
   const [data, setData] = useState<FriendsProps[]>([]);
+  const navigate = useNavigate();
 
   // TODO: delete this useEffect
-
-
 
   useEffect(() => {
     setData([
@@ -74,14 +59,16 @@ export const Friends = () => {
   }, []);
 
   return (
-    <>
-      <h1 className="text-center pt-6">Liste d'amis</h1>
+    <div className="w-11/12 mx-auto">
+      <Group position="apart">
+        <h1 className="text-center pt-6">Liste d'amis</h1>
+        <Button leftIcon={<IconUserSearch size={18} />} color="dark" variant="outline" onClick={() => navigate("/users")}>Rechercher</Button>
+      </Group>
       <ScrollArea>
-        {/* TODO: margin à width of table  */}
-        <Table sx={{ width: "100%" }} verticalSpacing="md">
+        <Table verticalSpacing="md">
           <tbody>{rowsFriends(data)}</tbody>
         </Table>
       </ScrollArea>
-    </>
+    </div>
   );
 };
