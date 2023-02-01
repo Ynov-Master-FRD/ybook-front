@@ -1,7 +1,6 @@
-import React from 'react';
+import React from "react";
 
-
-import './App.scss';
+import "./App.scss";
 import FormRegister from "./views/Login/FormRegister";
 import { Route, Routes } from 'react-router-dom';
 import BottomNavBar from './components/shared/Navbar/BottomNavBar';
@@ -14,16 +13,19 @@ import { Messages } from './views/Conversations/Messages';
 import { ConversationProvider } from './providers/ConversationProvider';
 import { ConversationDetail } from './views/Conversations/ConversationDetail';
 
+
 function App() {
   return (
     <div className="App">
-      <MantineProvider withNormalizeCSS >
+      <MantineProvider withNormalizeCSS>
         <NotificationsProvider>
-          <Routes>
+          <ModalsProvider>
+            <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/register" element={<FormRegister />} />
               <Route path="/friends" element={<Friends />} />
               <Route path="/profil" element={<Profil />} />
+
                 <Route path="/messages" element={
                 <ConversationProvider>
                   <Messages />
@@ -32,6 +34,7 @@ function App() {
                 <Route path="/conversations/:idConversation" element={<ConversationDetail />} />
           </Routes>
           <BottomNavBar></BottomNavBar>
+
         </NotificationsProvider>
       </MantineProvider>
     </div>
