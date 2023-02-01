@@ -40,28 +40,28 @@ export const ConversationDetail: React.FC = () => {
   return (
     <div>
       <h1>ConversationDetail</h1>
-        <div className="flex flex-col h-full p-4">
+        <div className="flex flex-col h-full p-4 pb-20 gap-2.5">
       {
             conversationMessages && conversationMessages.length > 0 ? conversationMessages.map((message) => {
                 if(message.userId === userId) {
                     return (
                         <Group key={message.id}  position="right">
-                            <div>
-                                <Text color="dimmed" size="xs">{new Date(message.createdAt).toDateString()} {new Date(message.createdAt).toLocaleTimeString()}</Text>
+                            <div className="max-w-[80%]">
+                                <Text className="text-right" color="dimmed" size="xs">{new Date(message.createdAt).toDateString()} {new Date(message.createdAt).toLocaleTimeString()}</Text>
                                 <div className={'p-3 rounded-xl'} style={{backgroundColor: 'coral'}}>
-                                    <Text>{message.content}</Text>
+                                    <Text className="word-break: break-all">{message.content}</Text>
                                 </div>
                             </div>
                         </Group>
                     )
                 }else{
                     return (
-                        <Group key={message.id}  position="left">
+                        <Group key={message.id} noWrap={true}  position="left" spacing={0}>
                             <Avatar radius="xl" />
-                            <div>
+                            <div className="max-w-[80%]">
                                 <Text color="dimmed" size="xs">{new Date(message.createdAt).toDateString()} {new Date(message.createdAt).toLocaleTimeString()}</Text>
                                 <div className={'p-3 rounded-xl bg-blue'} style={{backgroundColor: '#228be6'}}>
-                                    <Text>{message.content}</Text>
+                                    <Text className="word-break: break-all">{message.content}</Text>
                                 </div>
                             </div>
                         </Group>
