@@ -1,6 +1,6 @@
-import { ActionIcon, Avatar, Container, Group, Text, TextInput, useMantineTheme } from "@mantine/core";
-import { IconArrowLeft, IconArrowRight, IconSearch } from "@tabler/icons";
-import { useEffect, useState } from "react";
+import { ActionIcon, Avatar, Group, Text, TextInput, useMantineTheme } from "@mantine/core";
+import { IconArrowLeft, IconArrowRight } from "@tabler/icons";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import apiBack from "../../utils/axios-api";
 import { IConversation, IConversationMessage } from "../../utils/Interface/Conversation";
@@ -13,8 +13,33 @@ export const ConversationDetail: React.FC = () => {
     const [ConversationReady, setConversationReady] = useState<boolean>(false);
     const userId = 20
     const { idConversation } = useParams<Record<string, string>>();
-
     const theme =  useMantineTheme();
+
+    
+    let inputRef = useRef<HTMLInputElement>(null);
+    
+    const handleSubmit = (inputRef: React.RefObject<HTMLInputElement>) => {
+        const content = inputRef.current?.value;
+        if (content === '') return;
+        apiBack.post("/user/20/messages", {
+            conversationId: Number(idConversation),
+            userId: userId,
+            content: content,
+        }).then((response) => {
+            console.log(response.data);
+            setConversationMessages([...conversationMessages, response.data]);
+            inputRef.current!.value = '';
+        })
+        .catch((error: Error) => {
+            console.log({
+              conversationId: idConversation,
+              userId: userId,
+              content: content,
+          })
+            console.log(error);
+        });
+      };
+
     useEffect(() => {
         console.log(idConversation);
         
@@ -28,6 +53,8 @@ export const ConversationDetail: React.FC = () => {
             .catch((error: Error) => {
                 console.log(error);
             });
+
+
     }, [idConversation]);
 
     useEffect(() => {
@@ -39,8 +66,8 @@ export const ConversationDetail: React.FC = () => {
 
   return (
     <div>
-      <h1>ConversationDetail</h1>
         <div className="flex flex-col h-full p-4 pb-20 gap-2.5">
+          <Text className="p-4" size="xl" weight={700}>{'Conversation détail'}</Text>
       {
             conversationMessages && conversationMessages.length > 0 ? conversationMessages.map((message) => {
                 if(message.userId === userId) {
@@ -73,8 +100,9 @@ export const ConversationDetail: React.FC = () => {
       className="mt-4"
       radius="xl"
       size="md"
+      ref={inputRef}
       rightSection={
-        <ActionIcon size={32} radius="xl" color={theme.primaryColor} variant="filled">
+        <ActionIcon size={32} radius="xl" color={theme.primaryColor} variant="filled" onClick={()=>handleSubmit(inputRef)} >
           {theme.dir === 'ltr' ? (
             <IconArrowRight size={18} stroke={1.5} />
           ) : (

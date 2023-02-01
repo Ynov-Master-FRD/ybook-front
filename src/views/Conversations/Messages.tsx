@@ -33,7 +33,11 @@ export const Messages: React.FunctionComponent = () => {
         if(conversationsReady === false) return;
         setFilteredConversations(
             conversations.filter((conversation: IConversation)=>{
-                return conversation.from.firstname.toLowerCase().includes(search.toLowerCase()) || conversation.from.lastname.toLowerCase().includes(search.toLowerCase())  
+                if(conversation.from.id === userId){
+                    return conversation.to.firstname.toLowerCase().includes(search.toLowerCase()) || conversation.to.lastname.toLowerCase().includes(search.toLowerCase())
+                }else{
+                    return conversation.from.firstname.toLowerCase().includes(search.toLowerCase()) || conversation.from.lastname.toLowerCase().includes(search.toLowerCase())  
+                }
             })
         )
     },[search, conversations])
@@ -80,7 +84,7 @@ export const Messages: React.FunctionComponent = () => {
             </div>
             <div className="overflow-y-auto flex flex-col">
                 {filteredConversations.map((conversation) => (
-                    <Link key={conversation.id} to={`/conversations/${conversation.id}`}>
+                    <Link className="no-underline" key={conversation.id} to={`/conversations/${conversation.id}`}>
                         <Group className="cursor-pointer" position="apart">
                             <div className="flex no-wrap gap-3" onClick={() => handleSelectConversation(conversation.id)}>
                                 <Avatar radius="xl" />
@@ -89,7 +93,7 @@ export const Messages: React.FunctionComponent = () => {
                                         {conversationName(conversation)}
                                     </Text>
                                     <Text size="sm" color="dimmed">
-                                        {conversation.messages.length > 0 ? conversation.messages[0].content : ''}
+                                        {conversation.messages.length > 0 && conversation.messages[0].userId === userId ? '(Vous) ' : '' }{conversation.messages.length > 0 ? conversation.messages[0].content : ''}
                                     </Text>
                                 </div>
                             </div>
