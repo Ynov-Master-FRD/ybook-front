@@ -1,11 +1,24 @@
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import ModalConfirmation from '../../components/modalConfirmation';
 import { useAuth } from '../../hooks/AuthHook';
 
 const FormRegister: React.FC = () => {
     const [showModal, setShowModal] = useState(false);
+    const [validationOk, setValidationOk] = useState<boolean>(false);
+    const [result, setResult] = useState<string>('');
     const { register } = useAuth();
+    const navigate  = useNavigate();
+    
+    const callbackValidation = ()=>{
+        navigate('/login');
+    }
+    
+    useEffect(() => {
+        console.log('use effect form register');
+        
+    },[result])
 
     // make table of refs for form 
     const formRegister = {
@@ -52,7 +65,14 @@ const FormRegister: React.FC = () => {
         attributeList.push(attributeLastName);
         // attributeList.push(attributePassword);
 
-         register(formRegister.email.current?.value as string, formRegister.password.current?.value as string, attributeList)
+        try {
+            register(formRegister.email.current?.value as string, formRegister.password.current?.value as string, attributeList)
+        } catch (error) {
+            console.log(error);
+            console.log('ttt');
+            
+        }
+        setShowModal(true);
 
     }
 
@@ -76,9 +96,9 @@ const FormRegister: React.FC = () => {
                     <button type="submit" className="bg-blue-500 text-white rounded-md p-2">Créer</button>
                 </form>
             </div>
-            <button onClick={()=>setShowModal(true)}>modal</button>
+            <button onClick={()=>setShowModal(true) }>modal</button>
             {
-                showModal ? <ModalConfirmation/> : null
+                showModal ? <ModalConfirmation callbackValidation={setResult}/> : null
             }
         </div>
     );

@@ -11,6 +11,11 @@ export const useAuth = () => {
     const register = (email: string, password: string, attributeList: AmazonCognitoIdentity.CognitoUserAttribute[]) => {
         userPoolData.signUp(email, password, attributeList, null as any, (err, result) => {
             if (err) {
+                if(err.name === 'UsernameExistsException') {
+                    throw new Error('UsernameExistsException');
+                }else{
+                    
+                }
                 alert(err.message || JSON.stringify(err));
                 return;
             }
@@ -21,18 +26,38 @@ export const useAuth = () => {
             }
         });
     }
-
-    const confirmationRegister = (code: string) => {
+    //second paramters is a callback function ( set state )
+    const confirmationRegister = (code: string,  setResult: React.Dispatch<React.SetStateAction<string>>) => {
+        if(!code || code.length === 0) {
+            throw new Error('Code Requis');
+        }
         if(cognitoUser) {
             cognitoUser.confirmRegistration(code, true, (err, result) => {
                 if(err) {
-                    alert(err.message || JSON.stringify(err));
+                    // if erreur 400, username already exist
+                    if(err.name === 'UsernameExistsException') {
+                        throw new Error('UsernameExistsException');
+                    }else{
+                        alert(err.message || JSON.stringify(err));
+                    }
                     return null;
                 }
                 console.log('call result: ' + result);
-                return result;
+                setResult(result);
             });
+        }else{
+            throw new Error('Action impossible, veuillez réessayer');
         }
+    }
+
+    const resendConfirmationCode = () => {
+        cognitoUser.resendConfirmationCode(function(err, result){
+            if (err){
+                alert(err.message || JSON.stringify(err));
+                return;
+            }
+            console.log('call result: ' + result);
+        });
     }
 
     const login = (email: string, password: string) => {
