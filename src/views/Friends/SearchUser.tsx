@@ -203,7 +203,7 @@ export function SearchUser({ data }: TableSortProps) {
   return (
     <ScrollArea className="w-11/12 mx-auto mt-3 pb-20">
       <TextInput
-        placeholder="Search by any field"
+        placeholder="Rechercher un utilisateur"
         mb="md"
         icon={<IconSearch size={14} stroke={1.5} />}
         value={search}

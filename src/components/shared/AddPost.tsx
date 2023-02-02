@@ -1,14 +1,13 @@
-import { Button, Modal } from "@mantine/core";
-import React, { useRef, useState } from "react";
+import { Button } from "@mantine/core";
+import { useState } from "react";
 import apiBack from "../../utils/axios-api";
-import InputPost from "./InputPost";
 
 import { useEditor } from "@tiptap/react";
-import { RichTextEditor, Link } from "@mantine/tiptap"
+import { RichTextEditor, Link } from "@mantine/tiptap";
 import StarterKit from "@tiptap/starter-kit";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import { Highlight } from "@tiptap/extension-highlight";
-import { showNotification, updateNotification } from '@mantine/notifications'
+import { showNotification, updateNotification } from '@mantine/notifications';
 import { IconCheck, IconX } from "@tabler/icons";
 
 const DOMPurify = require('dompurify');

@@ -4,7 +4,8 @@ import styles from "./Home.module.scss";
 
 import { IPost } from "../../utils/Interface/Post";
 import apiBack from "../../utils/axios-api";
-import { Loader } from "@mantine/core";
+import { ActionIcon, Group, Loader, TextInput } from "@mantine/core";
+import { IconFilter, IconSearch } from "@tabler/icons";
 
 const DOMPurify = require("dompurify");
 
@@ -31,6 +32,20 @@ const Home = () => {
   return (
     <div className={styles.container}>
       <h1 className="text-center pt-6">Actualités</h1>
+      <Group className="mb-3" position="apart">
+        <TextInput
+          className="flex-grow"
+          placeholder="Rechercher un post..."
+          radius="lg"
+          icon={<IconSearch size={14} stroke={1.5} />}
+          // TODO: Search bar doesn't work
+        />
+
+        <ActionIcon variant="light">
+          <IconFilter size={36} stroke={1.5} />
+        </ActionIcon>
+      </Group>
+
       <div className={styles.postContainer}>
         {isLoading && (
           <Loader
