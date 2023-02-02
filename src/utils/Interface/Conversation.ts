@@ -20,6 +20,7 @@ export interface IConversationMessage {
     content: string;
     from: IUser;
     fromId: number;
+    userId: number;
     to: IUser;
     toId: number;
     text: string;

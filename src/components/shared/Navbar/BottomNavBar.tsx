@@ -31,7 +31,7 @@ const BottomNavBar = () => {
         <IconNavbar
           path="../assets/icon/Message.svg"
           name="Message"
-          link="/messages"
+          link="/conversationslist"
         ></IconNavbar>
         <ActionIcon
           // onClick={() => setOpened(true)}
