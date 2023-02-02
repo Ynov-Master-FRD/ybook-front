@@ -10,7 +10,7 @@ import { MantineProvider } from '@mantine/core';
 import Home from './views/Home/Home';
 import { NotificationsProvider } from '@mantine/notifications';
 import { Friends } from './views/Friends/Friends';
-import { Messages } from './views/Conversations/Messages';
+import { ConversationsList } from './views/Conversations/ConversationsList';
 import { ConversationProvider } from './providers/ConversationProvider';
 import { ConversationDetail } from './views/Conversations/ConversationDetail';
 
@@ -24,9 +24,9 @@ function App() {
               <Route path="/register" element={<FormRegister />} />
               <Route path="/friends" element={<Friends />} />
               <Route path="/profil" element={<Profil />} />
-                <Route path="/messages" element={
+                <Route path="/conversationslist" element={
                 <ConversationProvider>
-                  <Messages />
+                  <ConversationsList />
                 </ConversationProvider>
                 } />
                 <Route path="/conversations/:idConversation" element={<ConversationDetail />} />

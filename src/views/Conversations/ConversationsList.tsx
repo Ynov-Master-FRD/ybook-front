@@ -7,7 +7,7 @@ import { IconSearch } from '@tabler/icons';
 import { Link } from "react-router-dom";
 
 
-export const Messages: React.FunctionComponent = () => {
+export const ConversationsList: React.FunctionComponent = () => {
     const userId = 20;
     const {conversations} = useConversationContext();
     const {setConversations} = useConversationContext();
