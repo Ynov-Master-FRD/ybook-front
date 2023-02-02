@@ -1,7 +1,3 @@
-import React from "react";
-import { GlobalProvider } from "../../providers/GlobalProvider";
-
-
 interface childrenProps {
     color?: string,
     size: "small" | "medium" | "large"

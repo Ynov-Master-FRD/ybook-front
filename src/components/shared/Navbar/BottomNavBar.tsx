@@ -5,18 +5,21 @@ import styles from "./BottomNavBar.module.scss";
 
 import { IconPlus } from "@tabler/icons";
 import AddPost from "../AddPost";
+import { useLocation, useMatch, useNavigate } from "react-router-dom";
 
 const BottomNavBar = () => {
-  const [opened, setOpened] = useState(false);
+  const [openNewPost, setOpenPost] = useState(false);
+  const match = useLocation();
+  const navigate = useNavigate();
 
   return (
     <div className={styles.navbar}>
       <Modal
         title="Publier un post"
-        opened={opened}
-        onClose={() => setOpened(false)}
+        opened={openNewPost}
+        onClose={() => setOpenPost(false)}
       >
-        <AddPost setOpened={setOpened}></AddPost>
+        <AddPost setOpened={setOpenPost}></AddPost>
       </Modal>
 
       <div className="flex justify-around items-center h-full">
@@ -31,7 +34,12 @@ const BottomNavBar = () => {
           link="/conversationslist"
         ></IconNavbar>
         <ActionIcon
-          onClick={() => setOpened(true)}
+          // onClick={() => setOpened(true)}
+          onClick={
+            match.pathname === "/friends"
+              ? () => navigate("/users")
+              : () => setOpenPost(true)
+          }
           radius="lg"
           variant="filled"
           color="dark"

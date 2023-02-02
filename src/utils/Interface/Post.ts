@@ -1,4 +1,3 @@
-import { Avatar } from "@mantine/core";
 import { IUser } from "./User";
 
 export interface IPost {
