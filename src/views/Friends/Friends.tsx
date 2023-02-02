@@ -1,74 +1,68 @@
-import { Table, ScrollArea, Group, Button } from "@mantine/core";
-import { useEffect, useState } from "react";
-import { rowsFriends } from "./rowsFriends";
-import { IconUserSearch } from "@tabler/icons";
+import { Group, Button, Tabs } from "@mantine/core";
+import {
+  IconCircleX,
+  IconHeartHandshake,
+  IconHourglassEmpty,
+  IconMessageCircle,
+  IconPhoto,
+  IconSettings,
+  IconUserSearch,
+} from "@tabler/icons";
 import { useNavigate } from "react-router-dom";
-
-export interface FriendsProps {
-  avatar: string;
-  name: string;
-  job: string;
-  email: string;
-}
+import { AcceptFriend } from "./AcceptFriend";
+import { IgnoreFriend } from "./IgnoreFriend";
+import { PendingFriend } from "./PendingFriend";
 
 export const Friends = () => {
-  const [data, setData] = useState<FriendsProps[]>([]);
   const navigate = useNavigate();
 
-  // TODO: delete this useEffect
-
-  useEffect(() => {
-    setData([
-      {
-        avatar: "https://i.pravatar.cc/300?img=1",
-        name: "John Doe",
-        job: "Frontend developer",
-        email: "d@email.com",
-      },
-      {
-        avatar: "https://i.pravatar.cc/300?img=1",
-        name: "John Doe",
-        job: "Frontend developer",
-        email: "d@email.com",
-      },
-      {
-        avatar: "https://i.pravatar.cc/300?img=1",
-        name: "John Doe",
-        job: "Frontend developer",
-        email: "d@email.com",
-      },
-      {
-        avatar: "https://i.pravatar.cc/300?img=1",
-        name: "John Doe",
-        job: "Frontend developer",
-        email: "d@email.com",
-      },
-      {
-        avatar: "https://i.pravatar.cc/300?img=1",
-        name: "John Doe",
-        job: "Frontend developer",
-        email: "d@email.com",
-      },
-      {
-        avatar: "https://i.pravatar.cc/300?img=1",
-        name: "John Doe",
-        job: "Frontend developer",
-        email: "d@email.com",
-      },
-    ]);
-  }, []);
-
   return (
-    <div className="w-11/12 mx-auto">
+    <div className="w-[95%] mx-auto">
       <Group position="apart">
         <h1 className="text-center pt-6">Liste d'amis</h1>
-        <Button leftIcon={<IconUserSearch size={18} />} color="dark" variant="outline" onClick={() => navigate("/users")}>Rechercher</Button>
+        <Button
+          leftIcon={<IconUserSearch size={18} />}
+          color="dark"
+          variant="outline"
+          onClick={() => navigate("/users")}
+        >
+          Rechercher
+        </Button>
       </Group>
-      <ScrollArea>
-        <Table verticalSpacing="md">
-          <tbody>{rowsFriends(data)}</tbody>
-        </Table>
-      </ScrollArea>
+      <Tabs
+        color="dark"
+        variant="pills"
+        radius="md"
+        orientation="vertical"
+        defaultValue="accepted"
+      >
+        <Tabs.List>
+          <Tabs.Tab value="accepted" icon={<IconHeartHandshake size={14} />}>
+            Amis
+          </Tabs.Tab>
+          <Tabs.Tab value="pending" icon={<IconHourglassEmpty size={14} />}>
+            En attente
+          </Tabs.Tab>
+          <Tabs.Tab value="ignored" icon={<IconCircleX size={14} />}>
+            Ignorés
+          </Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Panel value="accepted" pl="xs">
+          Vos vrais amis ✅ :
+          <AcceptFriend />
+        </Tabs.Panel>
+
+        <Tabs.Panel value="pending" pl="xs">
+          Ceux qui hésitent encore 😴 :
+          <PendingFriend />
+        </Tabs.Panel>
+
+        <Tabs.Panel value="ignored" pl="xs">
+          Ils ne vous aiment pas 😷 :
+          <IgnoreFriend />
+        </Tabs.Panel>
+      </Tabs>
     </div>
   );
 };

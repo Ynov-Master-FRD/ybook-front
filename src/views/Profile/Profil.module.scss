@@ -1,5 +1,6 @@
 .banner{
     background-image: url("/../public/assets/images/banner.jpg");
+    filter: grayscale(100%);
     background-size: cover;
     background-position: center;
     height: 150px;

@@ -19,7 +19,7 @@ const Profil = () => {
       .get("/post")
       .then((response) => {
         setTimeout(() => {
-          setPosts(response.data);
+          setPosts(response.data.reverse());
           setIsLoading(false);
         }, 1000);
       })
