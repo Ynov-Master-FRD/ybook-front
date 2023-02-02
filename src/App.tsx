@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { MantineProvider } from "@mantine/core";
-import { Messages } from "./views/Conversations/Messages";
 import { ModalsProvider } from "@mantine/modals";
 import { Users } from "./views/Friends/Users";
 import './App.scss';
@@ -22,6 +20,7 @@ function App() {
     <div className="App">
       <MantineProvider withNormalizeCSS >
         <NotificationsProvider>
+        <ModalsProvider>
           <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/register" element={<FormRegister />} />
@@ -29,10 +28,10 @@ function App() {
               <Route path="/profil" element={<Profil />} />
               <Route path="/users" element={<Users />} />
               <Route
-                path="/messages"
+                path="/conversationslist"
                 element={
                   <ConversationProvider>
-                    <Messages />
+                    <ConversationsList />
                   </ConversationProvider>
                 }
               />
