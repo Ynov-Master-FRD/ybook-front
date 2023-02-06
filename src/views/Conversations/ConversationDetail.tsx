@@ -4,8 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import apiBack from "../../utils/axios-api";
 import { IConversation, IConversationMessage } from "../../utils/Interface/Conversation";
-
-
+import { io } from "socket.io-client";
 
 export const ConversationDetail: React.FC = () => {
     const [conversationMessages, setConversationMessages] = useState<IConversationMessage[]>([]);
@@ -14,9 +13,12 @@ export const ConversationDetail: React.FC = () => {
     const userId = 20
     const { idConversation } = useParams<Record<string, string>>();
     const theme =  useMantineTheme();
-
     
     let inputRef = useRef<HTMLInputElement>(null);
+
+    const handleMessage = (message: IConversationMessage) => {
+        setConversationMessages(prevMessage => [...prevMessage, message]);
+    }
     
     const handleSubmit = (inputRef: React.RefObject<HTMLInputElement>) => {
         const content = inputRef.current?.value;
@@ -26,28 +28,17 @@ export const ConversationDetail: React.FC = () => {
             userId: userId,
             content: content,
         }).then((response) => {
-            console.log(response.data);
-            setConversationMessages([...conversationMessages, response.data]);
             inputRef.current!.value = '';
         })
         .catch((error: Error) => {
-            console.log({
-              conversationId: idConversation,
-              userId: userId,
-              content: content,
-          })
             console.log(error);
         });
       };
 
     useEffect(() => {
-        console.log(idConversation);
-        
-        apiBack.get(`user/${userId}/conversations/${idConversation}`)
+        apiBack.get<IConversation>(`user/${userId}/conversations/${idConversation}`)
             .then((response) => {
                 setConversation(response.data);
-                console.log(response.data);
-                
                 setConversationReady(true);
             })
             .catch((error: Error) => {
@@ -58,10 +49,18 @@ export const ConversationDetail: React.FC = () => {
     }, [idConversation]);
 
     useEffect(() => {
-        if (ConversationReady === false) return;
-        setConversationMessages(conversation.messages);
+        if (ConversationReady === true) {
+            setConversationMessages(conversation.messages);
+        }
     }, [ConversationReady]);
 
+    useEffect(() => {
+        const socket = io('http://localhost:3001');
+        socket.emit('joinRoom',`room-${idConversation}`);
+        socket.on('sendMessage', (message: IConversationMessage) => {
+            handleMessage(message);
+        });
+    }, []);
 
 
   return (
