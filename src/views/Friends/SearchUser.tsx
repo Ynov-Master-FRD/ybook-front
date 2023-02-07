@@ -19,12 +19,11 @@ import {
   IconUserPlus,
   IconX,
   IconCheck,
+  IconUserOff,
 } from "@tabler/icons";
 import apiBack from "../../utils/axios-api";
 import { IUser } from "../../utils/Interface/User";
-import { PostProps } from "../../providers/PostProvider";
 import { showNotification, updateNotification } from "@mantine/notifications";
-import {IFriendship} from "../../utils/Interface/Friendship";
 
 interface TableSortProps {
   data: IUser[];
@@ -98,7 +97,7 @@ export function SearchUser({ data }: TableSortProps) {
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   //useAuth
   const AuthId = 18;
-  
+
   useEffect(() => {
     apiBack
       .get("/user")
@@ -157,121 +156,158 @@ export function SearchUser({ data }: TableSortProps) {
               loading: false,
               title: "Demande envoyée",
               message: "Votre demande d'amis a bien été envoyée",
-              color:"green",
+              color: "green",
               icon: <IconCheck size={18} />,
               autoClose: true,
               disallowClose: false,
             });
           })
           .catch((error) => {
-            console.log(error)
+            console.log(error);
             updateNotification({
               id: "add-friends",
               loading: false,
               title: "Erreur",
-              message: "Une erreur est survenue lors de l'envoi de votre demande",
-              color:"red",
+              message:
+                "Une erreur est survenue lors de l'envoi de votre demande",
+              color: "red",
               icon: <IconX size={18} />,
               autoClose: true,
               disallowClose: false,
             });
           });
+      }
+    });
+  };
 
-        }
+  const blockUser = (UserId: number) => {
+    apiBack
+      .put(`/user/block/${AuthId}`, { "userId": UserId })
+      .then((response) => {
+        showNotification({
+          id: "block-user",
+          loading: false,
+          title: "Utilisateur bloqué",
+          message: "L'utilisateur a bien été bloqué",
+          color: "green",
+          icon: <IconCheck size={18} />,
+          autoClose: true,
+          disallowClose: false,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        showNotification({
+          id: "block-user",
+          loading: false,
+          title: "Erreur",
+          message: "Une erreur est survenue lors du blocage de l'utilisateur",
+          color: "red",
+          icon: <IconX size={18} />,
+          autoClose: true,
+          disallowClose: false,
+        });
       });
   };
 
-  const rows = sortedData.map((row) => (
-    <tr key={row.email}>
-      <td>{row.firstname}</td>
-      <td>{row.lastname}</td>
-      <td>{row.email}</td>
-      <td>
-        <Group position="right">
-          <ActionIcon
-            variant="filled"
-            color="dark"
-            onClick={() => handleAddFriends(row.id)}
-          >
-            <IconUserPlus size={14} />
-          </ActionIcon >
-        </Group>
-      </td>
-    </tr>
-  ));
+    const rows = sortedData.map((row) => (
+      <tr key={row.email}>
+        <td>{row.firstname}</td>
+        <td>{row.lastname}</td>
+        <td>{row.email}</td>
+        <td>
+          <Group position="right">
+            <ActionIcon
+              variant="filled"
+              color="dark"
+              onClick={() => handleAddFriends(row.id)}
+            >
+              <IconUserPlus size={14} />
+            </ActionIcon>
+            <ActionIcon
+              variant="filled"
+              color="red"
+              onClick={() => blockUser(row.id)}
+            >
+              <IconUserOff size={14} />
+            </ActionIcon>
+          </Group>
+        </td>
+      </tr>
+    ));
 
-  return (
-    <ScrollArea className="w-11/12 mx-auto mt-3 pb-20">
-      <TextInput
-        placeholder="Rechercher un utilisateur"
-        mb="md"
-        icon={<IconSearch size={14} stroke={1.5} />}
-        value={search}
-        onChange={handleSearchChange}
-        // TODO: Search bar doesn't work
-      />
-      <Table
-        horizontalSpacing="xs"
-        verticalSpacing="xs"
-        fontSize="xs"
-        sx={{ tableLayout: "fixed", minWidth: "100%" }}
-      >
-        <thead>
-          <tr>
-            <Th
-              sorted={sortBy === "firstname"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("firstname")}
-            >
-              Prénom
-            </Th>
-            <Th
-              sorted={sortBy === "lastname"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("lastname")}
-            >
-              Nom
-            </Th>
-            <Th
-              sorted={sortBy === "email"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("email")}
-            >
-              Email
-            </Th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.length > 0 ? (
-            rows
-          ) : (
+    return (
+      <ScrollArea className="w-11/12 mx-auto mt-3 pb-20">
+        <TextInput
+          placeholder="Rechercher un utilisateur"
+          mb="md"
+          icon={<IconSearch size={14} stroke={1.5} />}
+          value={search}
+          onChange={handleSearchChange}
+          // TODO: Search bar doesn't work
+        />
+        <Table
+          horizontalSpacing="xs"
+          verticalSpacing="xs"
+          fontSize="xs"
+          sx={{ tableLayout: "fixed", minWidth: "100%" }}
+        >
+          <thead>
             <tr>
-              <td>
-                <Text weight={500} align="center">
-                  Nothing found
-                </Text>
-              </td>
+              <Th
+                sorted={sortBy === "firstname"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("firstname")}
+              >
+                Prénom
+              </Th>
+              <Th
+                sorted={sortBy === "lastname"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("lastname")}
+              >
+                Nom
+              </Th>
+              <Th
+                sorted={sortBy === "email"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("email")}
+              >
+                Email
+              </Th>
+              <th>Action</th>
             </tr>
-          )}
-        </tbody>
-      </Table>
-    </ScrollArea>
-  );
-}
+          </thead>
+          <tbody>
+            {rows.length > 0 ? (
+              rows
+            ) : (
+              <tr>
+                <td>
+                  <Text weight={500} align="center">
+                    Nothing found
+                  </Text>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+      </ScrollArea>
+    );
+  };
 
-const useStyles = createStyles(() => ({
-  th: {
-    padding: "0 !important",
-  },
+  const useStyles = createStyles(() => ({
+    th: {
+      padding: "0 !important",
+    },
 
-  control: {
-    width: "100%",
-  },
+    control: {
+      width: "100%",
+    },
 
-  icon: {
-    width: 21,
-    height: 21,
-    borderRadius: 21,
-  },
-}));
+    icon: {
+      width: 21,
+      height: 21,
+      borderRadius: 21,
+    },
+  }))

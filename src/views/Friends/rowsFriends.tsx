@@ -1,12 +1,30 @@
 import { Group, ActionIcon, Menu, Text, Badge } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { IconDots, IconTrash, IconUserOff, IconMessage, IconUserPlus, IconUserX } from "@tabler/icons";
 import React, { useState } from "react";
+import apiBack from "../../utils/axios-api";
 import { IFriendship } from "../../utils/Interface/Friendship";
 import { IUser } from "../../utils/Interface/User";
 
 export const rowsFriends = (data: IFriendship[]) => {
 
-  const _menuFriend = (friend: IUser) => {
+  const handleDelete = (id: number) => {
+    apiBack.delete(`/friendship/${id}`).then((res) => {
+      showNotification({
+        title: "Suppression",
+        message: "L'ami a été supprimé",
+        color: "green",
+      });
+    }).catch((err) => {
+      showNotification({
+        title: "Erreur",
+        message: "Une erreur est survenue",
+        color: "red",
+      });
+    });
+  };
+
+  const _menuFriend = (item: IFriendship) => {
     return (
       <Group spacing={0} position="right">
         <ActionIcon radius="md" variant="light">
@@ -25,7 +43,7 @@ export const rowsFriends = (data: IFriendship[]) => {
             >
               Bloquer
             </Menu.Item>
-            <Menu.Item icon={<IconTrash size={16} stroke={1.5} />} color="red">
+            <Menu.Item icon={<IconTrash size={16} stroke={1.5} />} color="red" onClick={()=>handleDelete(item.id)}>
               Supprimer
             </Menu.Item>
           </Menu.Dropdown>
@@ -82,7 +100,7 @@ export const rowsFriends = (data: IFriendship[]) => {
         <Text size="sm">{item.to.email}</Text>
       </td>
       <td>
-        {item.status.toString()==="ACCEPTED" ? _menuFriend(item.to) : _menuIncognito(item)}
+        {item.status.toString()==="ACCEPTED" ? _menuFriend(item) : _menuIncognito(item)}
       </td>
     </tr>
   ));
