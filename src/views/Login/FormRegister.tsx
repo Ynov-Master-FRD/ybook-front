@@ -1,24 +1,49 @@
+import { Anchor, Button, Paper, PasswordInput, TextInput, Title, Text, Modal } from '@mantine/core';
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import ModalConfirmation from '../../components/modalConfirmation';
 import { useAuth } from '../../hooks/AuthHook';
+import { useStyles } from '../../hooks/styleMantine/loginStyle';
 
 const FormRegister: React.FC = () => {
-    const [showModal, setShowModal] = useState(false);
+    const [showModaConfirmation, setShowModalConfirmation] = useState(false);
     const [validationOk, setValidationOk] = useState<boolean>(false);
-    const [result, setResult] = useState<string>('');
+    const [confirmationRegisterValue, setConfirmationRegisterValue] = useState('');
+    const { confirmationRegister } = useAuth();
+    const { resendConfirmationCode } = useAuth();
     const { register } = useAuth();
     const navigate  = useNavigate();
+    const { classes } = useStyles();
     
-    const callbackValidation = ()=>{
-        navigate('/login');
+    const codeValidation = React.createRef<HTMLInputElement>();
+
+    const callbackResend = () => {
+            resendConfirmationCode();
     }
+
+    const callbackValidation = () => {
+        const code = codeValidation.current?.value as string;
+        if (code === '') {
+            return;
+        }else{
+            confirmationRegister(code, setConfirmationRegisterValue);
+            // codeValidation.current!.value = '';
+        }
+    }
+
+    useEffect(() => {
+        if(confirmationRegisterValue !== ''){
+            setShowModalConfirmation(false);
+            codeValidation.current!.value = '';
+        }
+    }, [confirmationRegisterValue])
     
     useEffect(() => {
-        console.log('use effect form register');
-        
-    },[result])
+        if(validationOk){
+            setShowModalConfirmation(true);
+        }
+    },[validationOk])
+
 
     // make table of refs for form 
     const formRegister = {
@@ -47,60 +72,65 @@ const FormRegister: React.FC = () => {
     };
 
 
-    const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        console.log(formRegister);
+    const handleSubmit = () => {
         dataEmail.Value = formRegister.email.current?.value as string;
         dataFirstName.Value = formRegister.firstName.current?.value as string;
         dataLastName.Value = formRegister.lastName.current?.value as string;
-        // dataPassword.Value = formRegister.password.current?.value as string;
         
         const attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
         const attributeFirstName = new AmazonCognitoIdentity.CognitoUserAttribute(dataFirstName);
         const attributeLastName = new AmazonCognitoIdentity.CognitoUserAttribute(dataLastName);
-        // const attributePassword = new AmazonCognitoIdentity.CognitoUserAttribute(dataPassword);
 
         attributeList.push(attributeEmail);
         attributeList.push(attributeFirstName);
         attributeList.push(attributeLastName);
-        // attributeList.push(attributePassword);
 
         try {
-            register(formRegister.email.current?.value as string, formRegister.password.current?.value as string, attributeList)
+            register(formRegister.email.current?.value as string, formRegister.password.current?.value as string, attributeList, setValidationOk)
         } catch (error) {
             console.log(error);
-            console.log('ttt');
-            
         }
-        setShowModal(true);
 
     }
 
     return (
-        <div className='flex flex-col justify-center items-center min-h-screen '>
-            <div className='w-[60%] flex flex-col items-center'>
-                <h2>Créer un compte</h2>
-                <form onSubmit={handleSubmit} className="flex flex-col">
-                    <label htmlFor="email">Email</label>
-                    <input ref={formRegister.email}  type="email" name="email" id="email" className="border border-gray-300 rounded-md p-2" />
-                    
-                    <label htmlFor="firstName">First Name</label>
-                    <input ref={formRegister.firstName} type="text" name="firstName" id="firstName" className="border border-gray-300 rounded-md p-2" />
-                    
-                    <label htmlFor="lastName">Last Name</label>
-                    <input ref={formRegister.lastName} type="text" name="lastName" id="lastName" className="border border-gray-300 rounded-md p-2" />
-                    
-                    <label htmlFor="password">Password</label>
-                    <input ref={formRegister.password} type="password" name="password" id="password" className="border border-gray-300 rounded-md p-2" />
-                    
-                    <button type="submit" className="bg-blue-500 text-white rounded-md p-2">Créer</button>
-                </form>
+        <>  
+            <div className={classes.wrapper}>
+                <Paper className={classes.form} radius={0} p={30}>
+                    <Title order={2} className={classes.title} align="center" mt="md" mb={50}>
+                        Inscription Ybook
+                    </Title>
+
+                    <TextInput ref={formRegister.email} label="Adresse e-mail" placeholder="hello@gmail.com" size="md" />
+                    <TextInput ref={formRegister.firstName} label="Prénom" placeholder="Prénom :" mt="md" size="md" />
+                    <TextInput ref={formRegister.lastName} label="Nom" placeholder="Nom :" mt="md" size="md" />
+                    <PasswordInput ref={formRegister.password} label="Mot de passe" placeholder="Mot de passe" mt="md" size="md" />
+                    <Button onClick={handleSubmit} fullWidth mt="xl" size="md">
+                        S'inscrire
+                    </Button>
+
+                    <Text align="center" mt="md">
+                        Vous avez déjà un compte ?{' '}
+                        <Anchor<'a'> href="#" weight={700} onClick={(event) => {navigate('/login')}}>
+                            Se connecter
+                        </Anchor>
+                    </Text>
+                </Paper>
             </div>
-            <button onClick={()=>setShowModal(true) }>modal</button>
-            {
-                showModal ? <ModalConfirmation callbackValidation={setResult}/> : null
-            }
-        </div>
+            <Modal 
+                opened={showModaConfirmation}
+                onClose={() => setShowModalConfirmation(false)}
+                title="En attente de confirmation"
+                size="md"
+            >
+                <Text>
+                    Un code de confirmation vous a été envoyé. Veuillez cliquer sur le lien pour confirmer votre compte.
+                </Text>
+                <TextInput ref={codeValidation} label="Code de confirmation" placeholder="Code de confirmation" size="md" />
+                <Button onClick={callbackResend} fullWidth mt="xl" size="md">Envoyer à nouveau</Button>
+                <Button onClick={callbackValidation} fullWidth mt="xl" size="md">Envoyer</Button>
+            </Modal>
+        </>
     );
 }
 

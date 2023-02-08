@@ -10,8 +10,8 @@ function App() {
   return (
     <div className="App">
         <Routes>
-            <Route path="/" element={<FormRegister/>}/>
             <Route path="/login" element={<LoginView/>}/>
+            <Route path="/register" element={<FormRegister/>}/>
         </Routes>
     </div>
   );

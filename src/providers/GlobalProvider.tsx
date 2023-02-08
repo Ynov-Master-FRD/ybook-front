@@ -6,7 +6,8 @@ import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 
 type GlobalContextType = {
     token : string;
-    // cognitoUser : AmazonCognitoIdentity.
+    authUser : number
+    setAuthUser: React.Dispatch<React.SetStateAction<number>>
     cognitoUser : AmazonCognitoIdentity.CognitoUser;
     setCognitoUser: React.Dispatch<React.SetStateAction<AmazonCognitoIdentity.CognitoUser>>
 };
@@ -17,8 +18,9 @@ export const useGlobalContext = () => useContext(GlobalContext);
 export const GlobalProvider: React.FC<{children: ReactElement}> = ({children}) => {
     const [token] = useState<string>("");
     const [cognitoUser, setCognitoUser] = useState<AmazonCognitoIdentity.CognitoUser>(null as any);
+    const [authUser, setAuthUser] = useState<number>(20);
     return (
-        <GlobalContext.Provider value={{ token, cognitoUser, setCognitoUser }}>
+        <GlobalContext.Provider value={{ token, authUser, setAuthUser , cognitoUser, setCognitoUser }}>
             {children}
         </GlobalContext.Provider>
     );
