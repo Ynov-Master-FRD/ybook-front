@@ -22,6 +22,7 @@ export function SearchUser() {
   const [search, setSearch] = useState("");
   const [data, setData] = useState<IUser[]>([]);
   const [searchVoid, setSearchVoid] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
   const AuthId = 18;
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export function SearchUser() {
       setData(response.data);
       console.log(response.data);
     });
-  }, [searchVoid]);
+  }, [searchVoid, isBlocked]);
 
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,6 +116,7 @@ export function SearchUser() {
           autoClose: true,
           disallowClose: false,
         });
+        setIsBlocked(!isBlocked);
       })
       .catch((error) => {
         console.log(error);
@@ -129,6 +131,24 @@ export function SearchUser() {
           disallowClose: false,
         });
       });
+  };
+
+  const unblockUser = (UserId: number) => {
+    apiBack
+      .put(`/user/unblock/${AuthId}`, { userId: UserId })
+      .then(() => {
+        showNotification({
+          id: "unblock-user",
+          loading: false,
+          title: "Utilisateur débloqué",
+          message: "L'utilisateur a bien été débloqué",
+          color: "green",
+          icon: <IconCheck size={18} />,
+          autoClose: true,
+          disallowClose: false,
+        });
+        setIsBlocked(!isBlocked);
+      })
   };
 
   const rows = data.map((row) => (
@@ -150,7 +170,7 @@ export function SearchUser() {
             <ActionIcon
               variant="filled"
               color="green"
-              onClick={() => blockUser(row.id)}
+              onClick={() => unblockUser(row.id)}
             >
               <IconUserOff size={14} />
             </ActionIcon>
