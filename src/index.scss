@@ -90,3 +90,9 @@ blockquote {
   color: #000;
   border-left: 6px solid #dee2e6;
 }
+
+.App{
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}

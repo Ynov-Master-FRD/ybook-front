@@ -1,8 +1,7 @@
-import React from 'react';
-
 import { ModalsProvider } from "@mantine/modals";
 import { Users } from "./views/Friends/Users";
 import './App.scss';
+import { LoginView } from './views/Login/Login';
 import FormRegister from "./views/Login/FormRegister";
 import { Route, Routes } from 'react-router-dom';
 import BottomNavBar from './components/shared/Navbar/BottomNavBar';
@@ -18,11 +17,13 @@ import { ConversationDetail } from './views/Conversations/ConversationDetail';
 function App() {
   return (
     <div className="App">
+
       <MantineProvider withNormalizeCSS >
         <NotificationsProvider>
         <ModalsProvider>
           <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/login" element={<LoginView/>}/>
               <Route path="/register" element={<FormRegister />} />
               <Route path="/friends" element={<Friends />} />
               <Route path="/profil" element={<Profil />} />
