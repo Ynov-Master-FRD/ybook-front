@@ -1,4 +1,9 @@
-import React, { createContext, ReactElement, useContext, useState } from "react";
+import React, {
+    createContext,
+    ReactElement,
+    useContext,
+    useState,
+} from "react";
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 
 //context for global state
@@ -6,10 +11,10 @@ import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 
 type GlobalContextType = {
     token : string;
-    authUser : number
     setAuthUser: React.Dispatch<React.SetStateAction<number>>
     cognitoUser : AmazonCognitoIdentity.CognitoUser;
     setCognitoUser: React.Dispatch<React.SetStateAction<AmazonCognitoIdentity.CognitoUser>>
+    authUser : number
 };
 
 const GlobalContext = createContext<GlobalContextType>(null as any);
