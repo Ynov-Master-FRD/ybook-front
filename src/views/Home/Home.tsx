@@ -19,7 +19,7 @@ const Home = () => {
       .get("/post")
       .then((response) => {
         setTimeout(() => {
-          setPosts(response.data.reverse());
+          setPosts(response.data);
           setIsLoading(false);
         }, 500);
       })
@@ -56,7 +56,14 @@ const Home = () => {
           />
         )}
         {posts &&
-          posts.map((post) => (
+          posts.filter((post: IPost) => post.userId === 18)
+          .sort((a, b) => {
+            return (
+              new Date(b.createdAt).getTime() -
+              new Date(a.createdAt).getTime()
+            );
+          })
+          .map((post) => (
             <Post
               key={post.id}
               id={post.id}

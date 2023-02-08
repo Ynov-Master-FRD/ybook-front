@@ -1,10 +1,8 @@
-import { Group, ActionIcon, Menu, Text, Badge } from "@mantine/core";
+import { ActionIcon, Badge, Group, Menu, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { IconDots, IconTrash, IconUserOff, IconMessage, IconUserPlus, IconUserX } from "@tabler/icons";
-import React, { useState } from "react";
+import { IconDots, IconMessage, IconTrash, IconUserOff, IconUserPlus, IconUserX } from "@tabler/icons";
 import apiBack from "../../utils/axios-api";
 import { IFriendship } from "../../utils/Interface/Friendship";
-import { IUser } from "../../utils/Interface/User";
 
 export const rowsFriends = (data: IFriendship[]) => {
 

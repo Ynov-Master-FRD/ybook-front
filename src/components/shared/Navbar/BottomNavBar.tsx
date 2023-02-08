@@ -5,7 +5,7 @@ import styles from "./BottomNavBar.module.scss";
 
 import { IconPlus } from "@tabler/icons";
 import AddPost from "../AddPost";
-import { useLocation, useMatch, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const BottomNavBar = () => {
   const [openNewPost, setOpenPost] = useState(false);
@@ -34,7 +34,6 @@ const BottomNavBar = () => {
           link="/conversationslist"
         ></IconNavbar>
         <ActionIcon
-          // onClick={() => setOpened(true)}
           onClick={
             match.pathname === "/friends"
               ? () => navigate("/users")
