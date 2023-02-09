@@ -49,7 +49,7 @@ export function SearchUser() {
 
   const handleAddFriends = (UserId: number) => {
     showNotification({
-      id: "add-friends",
+      id: `add-friends-${UserId}`,
       loading: true,
       title: "Checking...",
       message: "Vérification de votre demande d'amis",
@@ -63,7 +63,7 @@ export function SearchUser() {
       );
       if (isAlreadySending) {
         updateNotification({
-          id: "add-friends",
+          id: `add-friends-${UserId}`,
           loading: false,
           title: "Impossible d'envoyer la demande",
           message: "Vous avez déjà envoyé une demande à cet utilisateur",
@@ -75,7 +75,7 @@ export function SearchUser() {
           .post("/friendship/add", { fromId: AuthId, toId: UserId })
           .then(() => {
             updateNotification({
-              id: "add-friends",
+              id: `add-friends-${UserId}`,
               loading: false,
               title: "Demande envoyée",
               message: "Votre demande d'amis a bien été envoyée",
@@ -88,7 +88,7 @@ export function SearchUser() {
           .catch((error) => {
             console.log(error);
             updateNotification({
-              id: "add-friends",
+              id: `add-friends-${UserId}`,
               loading: false,
               title: "Erreur",
               message:
