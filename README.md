@@ -3,7 +3,7 @@
 ## Initialisation du projet
 
 1. Copier le .env.local à la racine du projet
-2. Lancer la commande `npm run installStart`
+2. Lancer la commande `npm run installStart` qui installe les dépendances et lance le projet
 4. Cliquer sur se connecter et ensuite sur `Se connecter avec id 20 pour les tests Go`
 
 ### Barre de navigation
