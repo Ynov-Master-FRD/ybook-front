@@ -67,7 +67,7 @@ export const ConversationDetail: React.FC = () => {
   return (
     <div>
         <div className="flex flex-col h-full p-4 pb-20 gap-2.5">
-          <Text className="p-4" size="xl" weight={700}>{'Conversation détail'}</Text>
+          <h1 className="p-4">Conversation</h1>
       {
             conversationMessages && conversationMessages.length > 0 ? conversationMessages.map((message) => {
                 if(message.userId === userId) {
@@ -75,7 +75,7 @@ export const ConversationDetail: React.FC = () => {
                         <Group key={message.id}  position="right">
                             <div className="max-w-[80%]">
                                 <Text className="text-right" color="dimmed" size="xs">{new Date(message.createdAt).toDateString()} {new Date(message.createdAt).toLocaleTimeString()}</Text>
-                                <div className={'p-3 rounded-xl'} style={{backgroundColor: 'coral'}}>
+                                <div className={'p-3 rounded-xl'} style={{backgroundColor: '#e9e9e9'}}>
                                     <Text className="word-break: break-all">{message.content}</Text>
                                 </div>
                             </div>
@@ -83,11 +83,11 @@ export const ConversationDetail: React.FC = () => {
                     )
                 }else{
                     return (
-                        <Group key={message.id} noWrap={true}  position="left" spacing={0}>
-                            <Avatar radius="xl" />
+                        <Group key={message.id} noWrap={true} className="items-start"  position="left" spacing={0}>
+                            <Avatar radius="xl" size="lg" />
                             <div className="max-w-[80%]">
                                 <Text color="dimmed" size="xs">{new Date(message.createdAt).toDateString()} {new Date(message.createdAt).toLocaleTimeString()}</Text>
-                                <div className={'p-3 rounded-xl bg-blue'} style={{backgroundColor: '#228be6'}}>
+                                <div className={'p-3 rounded-xl bg-blue'} style={{backgroundColor: '#96CDFF'}}>
                                     <Text className="word-break: break-all">{message.content}</Text>
                                 </div>
                             </div>

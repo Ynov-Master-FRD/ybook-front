@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import apiBack from "../../utils/axios-api";
 import { useConversationContext } from "../../providers/ConversationProvider"
 import { IConversation } from "../../utils/Interface/Conversation";
-import { TextInput, Group, Text, Avatar } from '@mantine/core';
-import { IconSearch } from '@tabler/icons';
+import { TextInput, Group, Text, Avatar, Button } from '@mantine/core';
+import { IconSearch, IconCirclePlus } from '@tabler/icons';
 import { Link } from "react-router-dom";
 import { useAuthUser } from "../../hooks/useAuthUser";
 
@@ -69,9 +69,19 @@ export const ConversationsList: React.FunctionComponent = () => {
 
 
     return (
-        <div className="bg-white rounded-lg shadow-md">
-            <Text className="p-4" size="xl" weight={700}>Mes messages</Text>
-            <div className='p-4 flex justify-between items-center'>
+        <div className="bg-white rounded-lg shadow-md p-4">
+            <Group position="apart">
+            <h1  className="text-center pt-6">Mes messages</h1>
+        <Button
+          leftIcon={<IconCirclePlus size={18} />}
+          color="dark"
+          variant="outline"
+          disabled={true}
+        >
+          Créer
+        </Button>
+      </Group>
+            <div className='flex justify-between items-center'>
                 <TextInput
                     icon={<IconSearch size={18} stroke={1.5} />}
                     radius="xl"
@@ -83,14 +93,14 @@ export const ConversationsList: React.FunctionComponent = () => {
                     value={search}
                 />
             </div>
-            <div className="overflow-y-auto flex flex-col">
+            <div className="overflow-y-auto flex flex-col py-5 gap-2">
                 {filteredConversations.map((conversation) => (
-                    <Link className="no-underline" key={conversation.id} to={`/conversations/${conversation.id}`}>
+                    <Link className="no-underline rounded-lg bg- hover:bg-grey p-3" key={conversation.id} to={`/conversations/${conversation.id}`}>
                         <Group className="cursor-pointer" position="apart">
-                            <div className="flex no-wrap gap-3" onClick={() => handleSelectConversation(conversation.id)}>
-                                <Avatar radius="xl" />
+                            <div className="flex no-wrap items-center gap-3" onClick={() => handleSelectConversation(conversation.id)}>
+                                <Avatar radius="xl" size="md"/>
                                 <div>
-                                    <Text size="md">
+                                    <Text size="lg" color="dark">
                                         {conversationName(conversation)}
                                     </Text>
                                     <Text size="sm" color="dimmed">

@@ -20,7 +20,7 @@ function App() {
         <NotificationsProvider>
           <ModalsProvider>
             <Routes>
-              <Route path="/" element={<FormRegister />} />
+              <Route path="/" element={<LoginView />} />
               <Route path="/home" element={<Home />} />
               <Route path="/login" element={<LoginView />} />
               <Route path="/register" element={<FormRegister />} />
