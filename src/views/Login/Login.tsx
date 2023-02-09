@@ -22,7 +22,7 @@ export const LoginView: React.FC = () => {
     }
 
     const handleFakeLogin = () => {
-        navigate('/');
+        navigate('/home');
     }
 
     const callbackValidation = () => {

@@ -12,6 +12,10 @@ const BottomNavBar = () => {
   const match = useLocation();
   const navigate = useNavigate();
 
+  if (match.pathname === "/login" || match.pathname === "/register" || match.pathname === "/") {
+    return null;
+  }
+
   return (
     <div className={styles.navbar}>
       <Modal
@@ -26,7 +30,7 @@ const BottomNavBar = () => {
         <IconNavbar
           path="../assets/icon/Home.svg"
           name="Home"
-          link="/"
+          link="/home"
         ></IconNavbar>
         <IconNavbar
           path="../assets/icon/Message.svg"
