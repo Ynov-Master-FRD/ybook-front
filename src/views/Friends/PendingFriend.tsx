@@ -25,7 +25,9 @@ export const PendingFriend = () => {
         {data.length > 0 ? (
           <tbody>{rowsFriends(data)}</tbody>
         ) : (
-          <span className="italic">Le calme avant la tempête ...</span>
+          <tbody>
+            <span className="italic">Le calme avant la tempête ...</span>
+          </tbody>
         )}
       </Table>
     </ScrollArea>
