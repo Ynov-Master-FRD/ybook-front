@@ -1,6 +1,7 @@
 import { ActionIcon, Textarea } from "@mantine/core";
 import { IconMailFast } from "@tabler/icons";
 import { useState } from "react";
+import { useAuthUser } from "../../hooks/useAuthUser";
 import { usePostContext } from "../../providers/PostProvider";
 import apiBack from "../../utils/axios-api";
 
@@ -14,7 +15,7 @@ export function AddComment({ postId, setNewComment }: AddCommentProps) {
   const {post,dispatch} = usePostContext();
 
   //useAuth
-  const authId = 18;
+  const authId = useAuthUser();
 
   const handleSubmit = () => {
     apiBack

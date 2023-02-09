@@ -29,6 +29,7 @@ import {
   usePostContext,
   withPostContext,
 } from "../../providers/PostProvider";
+import { useAuthUser } from "../../hooks/useAuthUser";
 
 const Post = () => {
   const { post, dispatch } = usePostContext();
@@ -53,7 +54,7 @@ const Post = () => {
   const [displayComments, setDisplayComments] = useState(false);
 
   //useAuth
-  const authId = 18;
+  const authId = useAuthUser();
 
   const isEdited = createdAt !== updatedAt;
   const [isLiked, setIsLiked] = useState(

@@ -5,10 +5,11 @@ import { IConversation } from "../../utils/Interface/Conversation";
 import { TextInput, Group, Text, Avatar } from '@mantine/core';
 import { IconSearch } from '@tabler/icons';
 import { Link } from "react-router-dom";
+import { useAuthUser } from "../../hooks/useAuthUser";
 
 
 export const ConversationsList: React.FunctionComponent = () => {
-    const userId = 20;
+    const userId = useAuthUser();
     const {conversations} = useConversationContext();
     const {setConversations} = useConversationContext();
     const [conversationsReady, setConversationsReady] = useState(false)

@@ -1,7 +1,4 @@
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
-import * as AWS from 'aws-sdk/global';
-import { log } from 'console';
-import { useNavigation } from 'react-router-dom';
 import userPoolData from '../helpers/UserPool';
 import { useGlobalContext } from "../providers/GlobalProvider";
 

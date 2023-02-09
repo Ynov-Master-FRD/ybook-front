@@ -5,12 +5,13 @@ import { useParams } from "react-router-dom";
 import apiBack from "../../utils/axios-api";
 import { IConversation, IConversationMessage } from "../../utils/Interface/Conversation";
 import { io } from "socket.io-client";
+import { useAuthUser } from "../../hooks/useAuthUser";
 
 export const ConversationDetail: React.FC = () => {
     const [conversationMessages, setConversationMessages] = useState<IConversationMessage[]>([]);
     const [conversation, setConversation] = useState<IConversation>(null as any);
     const [ConversationReady, setConversationReady] = useState<boolean>(false);
-    const userId = 20
+    const userId = useAuthUser();
     const { idConversation } = useParams<Record<string, string>>();
     const theme =  useMantineTheme();
     

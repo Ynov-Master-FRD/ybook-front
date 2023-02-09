@@ -17,13 +17,14 @@ import {
 import apiBack from "../../utils/axios-api";
 import { IUser } from "../../utils/Interface/User";
 import { showNotification, updateNotification } from "@mantine/notifications";
+import { useAuthUser } from "../../hooks/useAuthUser";
 
 export function SearchUser() {
   const [search, setSearch] = useState("");
   const [data, setData] = useState<IUser[]>([]);
   const [searchVoid, setSearchVoid] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
-  const AuthId = 18;
+  const AuthId = useAuthUser();
 
   useEffect(() => {
     apiBack.get("/user").then((response) => {

@@ -11,6 +11,7 @@ import {
   IconTrash
 } from "@tabler/icons";
 import { useState } from "react";
+import { useAuthUser } from "../../hooks/useAuthUser";
 import { usePostContext } from "../../providers/PostProvider";
 import apiBack from "../../utils/axios-api";
 import { IPostComment } from "../../utils/Interface/Post";
@@ -26,7 +27,7 @@ export const Comment = (props: CommentProps) => {
   const { post, dispatch } = usePostContext();
 
   //useAuth
-  const authId = 18;
+  const authId = useAuthUser();
   const comment = props.comment;
 
   const handleDelete = (commentId: number) => {

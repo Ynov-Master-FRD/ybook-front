@@ -19,6 +19,7 @@ import {
   IconSearch,
   IconThumbUp,
 } from "@tabler/icons";
+import { useAuthUser } from "../../hooks/useAuthUser";
 
 const DOMPurify = require("dompurify");
 
@@ -27,7 +28,7 @@ const Profil = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdate, setUpdate] = useState(false);
   //useAuth
-  const AuthId = 18;
+  const AuthId = useAuthUser();
 
   useEffect(() => {
     apiBack

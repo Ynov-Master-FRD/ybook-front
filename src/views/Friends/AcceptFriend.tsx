@@ -1,5 +1,6 @@
 import { ScrollArea, Table } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { useAuthUser } from "../../hooks/useAuthUser";
 import apiBack from "../../utils/axios-api";
 import { IFriendship } from "../../utils/Interface/Friendship";
 import { rowsFriends } from "./rowsFriends";
@@ -9,7 +10,7 @@ export const AcceptFriend = () => {
   const [loading, setLoading] = useState(true);
 
   //useAuth
-  const AuthId = 18;
+  const AuthId = useAuthUser();
 
   useEffect(() => {
     apiBack.get(`/friendship/friends/${AuthId}`).then((response) => {
