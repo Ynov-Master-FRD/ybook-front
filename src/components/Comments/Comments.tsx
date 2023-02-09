@@ -2,6 +2,7 @@ import {
   Divider, Loader, Stack
 } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { useAuthUser } from "../../hooks/useAuthUser";
 import apiBack from "../../utils/axios-api";
 import { IPostComment } from "../../utils/Interface/Post";
 import { AddComment } from "./AddComment";
@@ -17,7 +18,7 @@ export const Comments = (props: CommentsProps) => {
   const [update, setUpdate] = useState(false);
 
   //useAuth
-  const authId = 18;
+  const authId = useAuthUser();
 
   useEffect(() => {
     apiBack.get(`/postcomment/${props.postId}`).then((response) => {

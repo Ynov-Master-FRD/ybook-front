@@ -9,6 +9,7 @@ import { Placeholder } from "@tiptap/extension-placeholder";
 import { Highlight } from "@tiptap/extension-highlight";
 import { showNotification, updateNotification } from '@mantine/notifications';
 import { IconCheck, IconX } from "@tabler/icons";
+import { useAuthUser } from "../../hooks/useAuthUser";
 
 const DOMPurify = require('dompurify');
 
@@ -18,6 +19,7 @@ interface AddPostProps {
 
 const AddPost = (props:AddPostProps) => {
     const [content, setContent] = useState("");
+    const authId = useAuthUser();
 
 
     const contentCleaner = (content: string) => {
@@ -51,7 +53,7 @@ const AddPost = (props:AddPostProps) => {
         
         apiBack.post('/post', {
                 htmlContent: contentCleaner(content),
-                userId: 18
+                userId: authId
             })
             .then((response) => {
                 updateNotification({
