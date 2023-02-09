@@ -24,9 +24,11 @@ export const AcceptFriend = () => {
         {data.length > 0 ? (
           <tbody>{rowsFriends(data)}</tbody>
         ) : (
-          <span className="italic">
-            Mieux vaut être seul que mal accompagné !
-          </span>
+          <tbody>
+            <span className="italic">
+              Mieux vaut être seul que mal accompagné !
+            </span>
+          </tbody>
         )}
       </Table>
     </ScrollArea>
