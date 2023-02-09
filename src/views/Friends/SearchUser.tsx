@@ -19,8 +19,8 @@ import { IUser } from "../../utils/Interface/User";
 import { showNotification, updateNotification } from "@mantine/notifications";
 
 export function SearchUser() {
-  const [search, setSearch] = useState("");
   const [data, setData] = useState<IUser[]>([]);
+  const [search, setSearch] = useState("");
   const [searchVoid, setSearchVoid] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
   const AuthId = 18;
