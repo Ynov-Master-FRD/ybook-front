@@ -1,6 +1,5 @@
 import { ModalsProvider } from "@mantine/modals";
 import { Users } from "./views/Friends/Users";
-import './App.scss';
 import { LoginView } from './views/Login/Login';
 import FormRegister from "./views/Login/FormRegister";
 import { Route, Routes } from 'react-router-dom';
