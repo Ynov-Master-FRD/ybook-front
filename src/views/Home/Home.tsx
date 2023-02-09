@@ -56,8 +56,7 @@ const Home = () => {
           />
         )}
         {posts &&
-          posts.filter((post: IPost) => post.userId === 18)
-          .sort((a, b) => {
+          posts.sort((a, b) => {
             return (
               new Date(b.createdAt).getTime() -
               new Date(a.createdAt).getTime()

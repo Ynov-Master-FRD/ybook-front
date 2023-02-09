@@ -25,7 +25,9 @@ export const IgnoreFriend = () => {
         {data.length > 0 ? (
           <tbody>{rowsFriends(data)}</tbody>
         ) : (
-          <span className="italic">Il n'y a personne ici..</span>
+          <tbody>
+            <span className="italic">Il n'y a personne ici..</span>
+          </tbody>
         )}
       </Table>
     </ScrollArea>
