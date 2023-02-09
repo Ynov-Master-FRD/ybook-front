@@ -61,13 +61,13 @@ export const LoginView: React.FC = () => {
             <div className={classes.wrapper}>
                 <Paper className={classes.form} radius={0} p={30}>
                     <Title order={2} className={classes.title} align="center" mt="md" mb={50}>
-                        Bienvenu sur Ybook!
+                        Bienvenue sur Ybook !
                     </Title>
 
                     <TextInput ref={formLogin.email} label="Adresse e-mail" placeholder="hello@gmail.com" size="md" />
-                    <PasswordInput ref={formLogin.password} label="Mot de passe" placeholder="Your password" mt="md" size="md" />
+                    <PasswordInput ref={formLogin.password} label="Mot de passe" placeholder="Votre mot de passe" mt="md" size="md" />
                     <Button onClick={handleSubmit} fullWidth mt="xl" size="md">
-                        Login
+                        Se connecter
                     </Button>
 
                     <Text align="center" mt="md">
@@ -77,9 +77,9 @@ export const LoginView: React.FC = () => {
                         </Anchor>
                     </Text>
                     <Text align="center" mt="md">
-                        Se connecter avec id 20 pour les tests{' '}
+                        Passer outre Cognito et testez l'application dès maintenant : {' '}
                         <Anchor<'a'> href="#" weight={700} onClick={handleFakeLogin}>
-                            Go
+                            Par ici
                         </Anchor>
                     </Text>
                 </Paper>
