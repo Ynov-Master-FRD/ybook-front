@@ -57,7 +57,6 @@ export const Comment = (props: CommentProps) => {
   const handleEdit = (comment: IPostComment) => {
     setIsEdit(!isEdit);
     setValue(comment.text);
-    console.log("click:" + isEdit);
   };
 
   const handleSubmit = () => {

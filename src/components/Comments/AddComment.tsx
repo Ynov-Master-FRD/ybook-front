@@ -25,7 +25,6 @@ export function AddComment({ postId, setNewComment }: AddCommentProps) {
         text: value,
       })
       .then((response) => {
-        console.log(response);
         setNewComment(true);
         setValue("");
         dispatch({type:"UPDATE", payload: {...post, nbComments: post.nbComments + 1}})
